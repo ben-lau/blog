@@ -1,0 +1,1187 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/weather.png">
+  <link rel="icon" type="image/png" href="/images/weather.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Ben Lau">
+  <meta name="keywords" content="">
+  <title>前端代码规范 - Ben Lau&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Ben Lau's space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/bg-mountain.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-15 23:50" pubdate>
+        2020年8月15日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      110
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    
+      <div class="d-none d-lg-block col-lg-2 ml-3 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">前端代码规范</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：9 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>很多人可能会疑惑，代码自己写的看的舒服不就得了，为什么一定要这样。是的，当你是一个人维护的时候确实是这样子，但是当多人协同开发的时候，代码规范就尤为重要，不仅仅会减少因为格式、风格不一致的代码合并记录，还能减少容易出现的 bug 和出问题的概率，更能提升自己的编码水平；当你能完全掌控自己代码的时候就会发现，有规范有约定的代码是如何优雅和易调试。所以即使是单人维护开发的项目，也需要有代码规范约定，这种约定可能来自于业界的共识，也可能来自公司的规则，也可能是个人的理解。</p>
+<p>虽然代码规范很多地方并不能用脚本或者人为强制控制，但是也希望各位能严格遵从，有问题可以提出并讨论，但是有规范的团队才是有战斗力的。保持自律，做个牛批的 programmer</p>
+<hr>
+<h1 id="代码规范"><a href="#代码规范" class="headerlink" title="代码规范"></a>代码规范</h1><p>代码一致性和最佳实践。通过代码风格的一致性，降低维护代码的成本以及改善多人协作的效率。同时遵守最佳实践，确保页面性能得到最佳优化和高效的代码。</p>
+<h2 id="关于项目"><a href="#关于项目" class="headerlink" title="关于项目"></a>关于项目</h2><ol>
+<li>项目文件命名应该全小写，以横杠隔开单词的形式，因为部分文件管理器不区分大小写</li>
+<li>文件命名应该清晰易懂，最好包含该模块的功能和属性</li>
+<li>如果一个模块文件夹内包含多个子模块，那默认导出模块文件应取名 <code>index</code></li>
+</ol>
+<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><p><code>原则：html 为前端的结构层，不应将样式层和逻辑层混写进入，减少没必要的多余空格，页面结构尽可能简单明了</code>。</p>
+<ol>
+<li>缩进使用 2 个空格。</li>
+<li>所有标签都必须闭合，包括一些自闭合的标签。</li>
+<li>使用双引号而不是单引号。</li>
+<li>一行应最好不超过 80 个字符，如过长可以属性换行。</li>
+<li>属性过多的（2 个或以上）可换行。</li>
+</ol>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">input</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;name-input&quot;</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;name-input&quot;</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;请输入名字&quot;</span></span>
+<span class="hljs-tag">  <span class="hljs-attr">maxlength</span>=<span class="hljs-string">&quot;10&quot;</span></span>
+<span class="hljs-tag">/&gt;</span></code></pre></div>
+
+<ol start="6">
+<li>注释可以为大型模块标注结构起始。</li>
+</ol>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--卡片头部--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;card-header&quot;</span>&gt;</span>
+  <span class="hljs-comment">&lt;!--...--&gt;</span>
+  <span class="hljs-comment">&lt;!--大量结构--&gt;</span>
+  <span class="hljs-comment">&lt;!--...--&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-comment">&lt;!--卡片头部 END--&gt;</span></code></pre></div>
+
+<ol start="7">
+<li>书写代码前应考虑结构复用性。</li>
+</ol>
+<details>
+  <summary>通用prettier代码风格配置</summary>
+
+<div class="hljs"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;printWidth&quot;</span>: <span class="hljs-number">80</span>,
+  <span class="hljs-attr">&quot;tabWidth&quot;</span>: <span class="hljs-number">2</span>,
+  <span class="hljs-attr">&quot;useTabs&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;semi&quot;</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">&quot;singleQuote&quot;</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">&quot;proseWrap&quot;</span>: <span class="hljs-string">&quot;preserve&quot;</span>,
+  <span class="hljs-attr">&quot;arrowParens&quot;</span>: <span class="hljs-string">&quot;avoid&quot;</span>,
+  <span class="hljs-attr">&quot;bracketSpacing&quot;</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">&quot;disableLanguages&quot;</span>: [<span class="hljs-string">&quot;vue&quot;</span>],
+  <span class="hljs-attr">&quot;endOfLine&quot;</span>: <span class="hljs-string">&quot;auto&quot;</span>,
+  <span class="hljs-attr">&quot;ignorePath&quot;</span>: <span class="hljs-string">&quot;.prettierignore&quot;</span>,
+  <span class="hljs-attr">&quot;jsxBracketSameLine&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;jsxSingleQuote&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;requireConfig&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;trailingComma&quot;</span>: <span class="hljs-string">&quot;es5&quot;</span>
+&#125;</code></pre></div>
+
+</details>
+
+<h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><ol>
+<li>类名使用小写字母，用横杠隔开单词。</li>
+<li>按结构层和样式层分层的原则来说，应避免出现 html 标签选择器。</li>
+<li>选择器应尽量简单，减少复杂嵌套。</li>
+<li>省略 0 属性值后面的单位。</li>
+<li>注释格式 <code>/* 这儿是注释 */</code>。</li>
+<li>样式应该有一定顺序性，总结来说就是盒子属性、盒子样式、行内属性、行内样式、动画。</li>
+</ol>
+<details>
+  <summary>tips: 样式顺序 stylelint</summary>
+
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = &#123;
+  plugins: [<span class="hljs-string">&#x27;stylelint-order&#x27;</span>],
+  rules: &#123;
+    <span class="hljs-string">&#x27;property-no-unknown&#x27;</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-string">&#x27;order/properties-order&#x27;</span>: [
+      &#123;
+        <span class="hljs-comment">// 重置</span>
+        properties: [<span class="hljs-string">&#x27;all&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 显示类型</span>
+        properties: [<span class="hljs-string">&#x27;display&#x27;</span>, <span class="hljs-string">&#x27;box-sizing&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// flex布局样式</span>
+        properties: [
+          <span class="hljs-string">&#x27;flex&#x27;</span>,
+          <span class="hljs-string">&#x27;flex-basis&#x27;</span>,
+          <span class="hljs-string">&#x27;flex-direction&#x27;</span>,
+          <span class="hljs-string">&#x27;flex-flow&#x27;</span>,
+          <span class="hljs-string">&#x27;flex-grow&#x27;</span>,
+          <span class="hljs-string">&#x27;flex-shrink&#x27;</span>,
+          <span class="hljs-string">&#x27;flex-wrap&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// grid布局样式</span>
+        properties: [
+          <span class="hljs-string">&#x27;grid&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-area&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-template&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-template-areas&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-template-rows&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-template-columns&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-row&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-row-start&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-row-end&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-column&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-column-start&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-column-end&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-auto-rows&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-auto-columns&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-auto-flow&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-gap&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-row-gap&#x27;</span>,
+          <span class="hljs-string">&#x27;grid-column-gap&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 列</span>
+        properties: [<span class="hljs-string">&#x27;align-content&#x27;</span>, <span class="hljs-string">&#x27;align-items&#x27;</span>, <span class="hljs-string">&#x27;align-self&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 行</span>
+        properties: [<span class="hljs-string">&#x27;justify-content&#x27;</span>, <span class="hljs-string">&#x27;justify-items&#x27;</span>, <span class="hljs-string">&#x27;justify-self&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 空隙</span>
+        properties: [<span class="hljs-string">&#x27;gap&#x27;</span>, <span class="hljs-string">&#x27;row-gap&#x27;</span>, <span class="hljs-string">&#x27;column-gap&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 位置</span>
+        properties: [<span class="hljs-string">&#x27;position&#x27;</span>, <span class="hljs-string">&#x27;top&#x27;</span>, <span class="hljs-string">&#x27;right&#x27;</span>, <span class="hljs-string">&#x27;bottom&#x27;</span>, <span class="hljs-string">&#x27;left&#x27;</span>, <span class="hljs-string">&#x27;z-index&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 顺序</span>
+        properties: [<span class="hljs-string">&#x27;order&#x27;</span>],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 盒子模型</span>
+        properties: [
+          <span class="hljs-string">&#x27;float&#x27;</span>,
+          <span class="hljs-string">&#x27;width&#x27;</span>,
+          <span class="hljs-string">&#x27;min-width&#x27;</span>,
+          <span class="hljs-string">&#x27;max-width&#x27;</span>,
+          <span class="hljs-string">&#x27;height&#x27;</span>,
+          <span class="hljs-string">&#x27;min-height&#x27;</span>,
+          <span class="hljs-string">&#x27;max-height&#x27;</span>,
+          <span class="hljs-string">&#x27;padding&#x27;</span>,
+          <span class="hljs-string">&#x27;padding-top&#x27;</span>,
+          <span class="hljs-string">&#x27;padding-right&#x27;</span>,
+          <span class="hljs-string">&#x27;padding-bottom&#x27;</span>,
+          <span class="hljs-string">&#x27;padding-left&#x27;</span>,
+          <span class="hljs-string">&#x27;margin&#x27;</span>,
+          <span class="hljs-string">&#x27;margin-top&#x27;</span>,
+          <span class="hljs-string">&#x27;margin-right&#x27;</span>,
+          <span class="hljs-string">&#x27;margin-bottom&#x27;</span>,
+          <span class="hljs-string">&#x27;margin-left&#x27;</span>,
+          <span class="hljs-string">&#x27;overflow&#x27;</span>,
+          <span class="hljs-string">&#x27;overflow-x&#x27;</span>,
+          <span class="hljs-string">&#x27;overflow-y&#x27;</span>,
+          <span class="hljs-string">&#x27;-webkit-overflow-scrolling&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-overflow-x&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-overflow-y&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-overflow-style&#x27;</span>,
+          <span class="hljs-string">&#x27;clip&#x27;</span>,
+          <span class="hljs-string">&#x27;clear&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 盒子样式</span>
+        properties: [
+          <span class="hljs-string">&#x27;background&#x27;</span>,
+          <span class="hljs-string">&#x27;background-color&#x27;</span>,
+          <span class="hljs-string">&#x27;background-image&#x27;</span>,
+          <span class="hljs-string">&quot;-ms-filter:\\&#x27;progid:DXImageTransform.Microsoft.gradient&quot;</span>,
+          <span class="hljs-string">&#x27;filter:progid:DXImageTransform.Microsoft.gradient&#x27;</span>,
+          <span class="hljs-string">&#x27;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader&#x27;</span>,
+          <span class="hljs-string">&#x27;filter&#x27;</span>,
+          <span class="hljs-string">&#x27;background-repeat&#x27;</span>,
+          <span class="hljs-string">&#x27;background-attachment&#x27;</span>,
+          <span class="hljs-string">&#x27;background-position&#x27;</span>,
+          <span class="hljs-string">&#x27;background-position-x&#x27;</span>,
+          <span class="hljs-string">&#x27;background-position-y&#x27;</span>,
+          <span class="hljs-string">&#x27;background-clip&#x27;</span>,
+          <span class="hljs-string">&#x27;background-origin&#x27;</span>,
+          <span class="hljs-string">&#x27;background-size&#x27;</span>,
+          <span class="hljs-string">&#x27;background-blend-mode&#x27;</span>,
+          <span class="hljs-string">&#x27;isolation&#x27;</span>,
+          <span class="hljs-string">&#x27;border&#x27;</span>,
+          <span class="hljs-string">&#x27;border-color&#x27;</span>,
+          <span class="hljs-string">&#x27;border-style&#x27;</span>,
+          <span class="hljs-string">&#x27;border-width&#x27;</span>,
+          <span class="hljs-string">&#x27;border-top&#x27;</span>,
+          <span class="hljs-string">&#x27;border-top-color&#x27;</span>,
+          <span class="hljs-string">&#x27;border-top-style&#x27;</span>,
+          <span class="hljs-string">&#x27;border-top-width&#x27;</span>,
+          <span class="hljs-string">&#x27;border-right&#x27;</span>,
+          <span class="hljs-string">&#x27;border-right-color&#x27;</span>,
+          <span class="hljs-string">&#x27;border-right-style&#x27;</span>,
+          <span class="hljs-string">&#x27;border-right-width&#x27;</span>,
+          <span class="hljs-string">&#x27;border-bottom&#x27;</span>,
+          <span class="hljs-string">&#x27;border-bottom-color&#x27;</span>,
+          <span class="hljs-string">&#x27;border-bottom-style&#x27;</span>,
+          <span class="hljs-string">&#x27;border-bottom-width&#x27;</span>,
+          <span class="hljs-string">&#x27;border-left&#x27;</span>,
+          <span class="hljs-string">&#x27;border-left-color&#x27;</span>,
+          <span class="hljs-string">&#x27;border-left-style&#x27;</span>,
+          <span class="hljs-string">&#x27;border-left-width&#x27;</span>,
+          <span class="hljs-string">&#x27;border-radius&#x27;</span>,
+          <span class="hljs-string">&#x27;border-top-left-radius&#x27;</span>,
+          <span class="hljs-string">&#x27;border-top-right-radius&#x27;</span>,
+          <span class="hljs-string">&#x27;border-bottom-right-radius&#x27;</span>,
+          <span class="hljs-string">&#x27;border-bottom-left-radius&#x27;</span>,
+          <span class="hljs-string">&#x27;border-image&#x27;</span>,
+          <span class="hljs-string">&#x27;border-image-source&#x27;</span>,
+          <span class="hljs-string">&#x27;border-image-slice&#x27;</span>,
+          <span class="hljs-string">&#x27;border-image-width&#x27;</span>,
+          <span class="hljs-string">&#x27;border-image-outset&#x27;</span>,
+          <span class="hljs-string">&#x27;border-image-repeat&#x27;</span>,
+          <span class="hljs-string">&#x27;outline&#x27;</span>,
+          <span class="hljs-string">&#x27;outline-width&#x27;</span>,
+          <span class="hljs-string">&#x27;outline-style&#x27;</span>,
+          <span class="hljs-string">&#x27;outline-color&#x27;</span>,
+          <span class="hljs-string">&#x27;outline-offset&#x27;</span>,
+          <span class="hljs-string">&#x27;box-shadow&#x27;</span>,
+          <span class="hljs-string">&#x27;mix-blend-mode&#x27;</span>,
+          <span class="hljs-string">&#x27;filter:progid:DXImageTransform.Microsoft.Alpha(Opacity&#x27;</span>,
+          <span class="hljs-string">&quot;-ms-filter:\\&#x27;progid:DXImageTransform.Microsoft.Alpha&quot;</span>,
+          <span class="hljs-string">&#x27;opacity&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-interpolation-mode&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 行内样式</span>
+        properties: [
+          <span class="hljs-string">&#x27;font&#x27;</span>,
+          <span class="hljs-string">&#x27;font-family&#x27;</span>,
+          <span class="hljs-string">&#x27;font-size&#x27;</span>,
+          <span class="hljs-string">&#x27;font-style&#x27;</span>,
+          <span class="hljs-string">&#x27;font-weight&#x27;</span>,
+          <span class="hljs-string">&#x27;font-variant&#x27;</span>,
+          <span class="hljs-string">&#x27;font-size-adjust&#x27;</span>,
+          <span class="hljs-string">&#x27;font-stretch&#x27;</span>,
+          <span class="hljs-string">&#x27;font-effect&#x27;</span>,
+          <span class="hljs-string">&#x27;font-emphasize&#x27;</span>,
+          <span class="hljs-string">&#x27;font-emphasize-position&#x27;</span>,
+          <span class="hljs-string">&#x27;font-emphasize-style&#x27;</span>,
+          <span class="hljs-string">&#x27;-webkit-font-smoothing&#x27;</span>,
+          <span class="hljs-string">&#x27;-moz-osx-font-smoothing&#x27;</span>,
+          <span class="hljs-string">&#x27;font-smooth&#x27;</span>,
+          <span class="hljs-string">&#x27;hyphens&#x27;</span>,
+          <span class="hljs-string">&#x27;line-height&#x27;</span>,
+          <span class="hljs-string">&#x27;color&#x27;</span>,
+          <span class="hljs-string">&#x27;text-align&#x27;</span>,
+          <span class="hljs-string">&#x27;text-align-last&#x27;</span>,
+          <span class="hljs-string">&#x27;text-emphasis&#x27;</span>,
+          <span class="hljs-string">&#x27;text-emphasis-color&#x27;</span>,
+          <span class="hljs-string">&#x27;text-emphasis-style&#x27;</span>,
+          <span class="hljs-string">&#x27;text-emphasis-position&#x27;</span>,
+          <span class="hljs-string">&#x27;text-decoration&#x27;</span>,
+          <span class="hljs-string">&#x27;text-indent&#x27;</span>,
+          <span class="hljs-string">&#x27;text-justify&#x27;</span>,
+          <span class="hljs-string">&#x27;text-outline&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-text-overflow&#x27;</span>,
+          <span class="hljs-string">&#x27;text-overflow&#x27;</span>,
+          <span class="hljs-string">&#x27;text-overflow-ellipsis&#x27;</span>,
+          <span class="hljs-string">&#x27;text-overflow-mode&#x27;</span>,
+          <span class="hljs-string">&#x27;text-shadow&#x27;</span>,
+          <span class="hljs-string">&#x27;text-transform&#x27;</span>,
+          <span class="hljs-string">&#x27;text-wrap&#x27;</span>,
+          <span class="hljs-string">&#x27;-webkit-text-size-adjust&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-text-size-adjust&#x27;</span>,
+          <span class="hljs-string">&#x27;letter-spacing&#x27;</span>,
+          <span class="hljs-string">&#x27;word-break&#x27;</span>,
+          <span class="hljs-string">&#x27;word-spacing&#x27;</span>,
+          <span class="hljs-string">&#x27;word-wrap&#x27;</span>,
+          <span class="hljs-string">&#x27;overflow-wrap&#x27;</span>,
+          <span class="hljs-string">&#x27;tab-size&#x27;</span>,
+          <span class="hljs-string">&#x27;white-space&#x27;</span>,
+          <span class="hljs-string">&#x27;vertical-align&#x27;</span>,
+          <span class="hljs-string">&#x27;list-style&#x27;</span>,
+          <span class="hljs-string">&#x27;list-style-position&#x27;</span>,
+          <span class="hljs-string">&#x27;list-style-type&#x27;</span>,
+          <span class="hljs-string">&#x27;list-style-image&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 可访问性和互动性</span>
+        properties: [
+          <span class="hljs-string">&#x27;pointer-events&#x27;</span>,
+          <span class="hljs-string">&#x27;-ms-touch-action&#x27;</span>,
+          <span class="hljs-string">&#x27;touch-action&#x27;</span>,
+          <span class="hljs-string">&#x27;cursor&#x27;</span>,
+          <span class="hljs-string">&#x27;visibility&#x27;</span>,
+          <span class="hljs-string">&#x27;zoom&#x27;</span>,
+          <span class="hljs-string">&#x27;table-layout&#x27;</span>,
+          <span class="hljs-string">&#x27;empty-cells&#x27;</span>,
+          <span class="hljs-string">&#x27;caption-side&#x27;</span>,
+          <span class="hljs-string">&#x27;border-spacing&#x27;</span>,
+          <span class="hljs-string">&#x27;border-collapse&#x27;</span>,
+          <span class="hljs-string">&#x27;content&#x27;</span>,
+          <span class="hljs-string">&#x27;quotes&#x27;</span>,
+          <span class="hljs-string">&#x27;counter-reset&#x27;</span>,
+          <span class="hljs-string">&#x27;counter-increment&#x27;</span>,
+          <span class="hljs-string">&#x27;resize&#x27;</span>,
+          <span class="hljs-string">&#x27;user-select&#x27;</span>,
+          <span class="hljs-string">&#x27;nav-index&#x27;</span>,
+          <span class="hljs-string">&#x27;nav-up&#x27;</span>,
+          <span class="hljs-string">&#x27;nav-right&#x27;</span>,
+          <span class="hljs-string">&#x27;nav-down&#x27;</span>,
+          <span class="hljs-string">&#x27;nav-left&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// svg样式</span>
+        properties: [
+          <span class="hljs-string">&#x27;alignment-baseline&#x27;</span>,
+          <span class="hljs-string">&#x27;baseline-shift&#x27;</span>,
+          <span class="hljs-string">&#x27;dominant-baseline&#x27;</span>,
+          <span class="hljs-string">&#x27;text-anchor&#x27;</span>,
+          <span class="hljs-string">&#x27;word-spacing&#x27;</span>,
+          <span class="hljs-string">&#x27;writing-mode&#x27;</span>,
+
+          <span class="hljs-string">&#x27;fill&#x27;</span>,
+          <span class="hljs-string">&#x27;fill-opacity&#x27;</span>,
+          <span class="hljs-string">&#x27;fill-rule&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-dasharray&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-dashoffset&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-linecap&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-linejoin&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-miterlimit&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-opacity&#x27;</span>,
+          <span class="hljs-string">&#x27;stroke-width&#x27;</span>,
+
+          <span class="hljs-string">&#x27;color-interpolation&#x27;</span>,
+          <span class="hljs-string">&#x27;color-interpolation-filters&#x27;</span>,
+          <span class="hljs-string">&#x27;color-profile&#x27;</span>,
+          <span class="hljs-string">&#x27;color-rendering&#x27;</span>,
+          <span class="hljs-string">&#x27;flood-color&#x27;</span>,
+          <span class="hljs-string">&#x27;flood-opacity&#x27;</span>,
+          <span class="hljs-string">&#x27;image-rendering&#x27;</span>,
+          <span class="hljs-string">&#x27;lighting-color&#x27;</span>,
+          <span class="hljs-string">&#x27;marker-start&#x27;</span>,
+          <span class="hljs-string">&#x27;marker-mid&#x27;</span>,
+          <span class="hljs-string">&#x27;marker-end&#x27;</span>,
+          <span class="hljs-string">&#x27;mask&#x27;</span>,
+          <span class="hljs-string">&#x27;shape-rendering&#x27;</span>,
+          <span class="hljs-string">&#x27;stop-color&#x27;</span>,
+          <span class="hljs-string">&#x27;stop-opacity&#x27;</span>,
+        ],
+      &#125;,
+      &#123;
+        <span class="hljs-comment">// 动画和过渡</span>
+        properties: [
+          <span class="hljs-string">&#x27;transition&#x27;</span>,
+          <span class="hljs-string">&#x27;transition-delay&#x27;</span>,
+          <span class="hljs-string">&#x27;transition-timing-function&#x27;</span>,
+          <span class="hljs-string">&#x27;transition-duration&#x27;</span>,
+          <span class="hljs-string">&#x27;transition-property&#x27;</span>,
+          <span class="hljs-string">&#x27;transform&#x27;</span>,
+          <span class="hljs-string">&#x27;transform-origin&#x27;</span>,
+          <span class="hljs-string">&#x27;animation&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-name&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-duration&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-play-state&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-timing-function&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-delay&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-iteration-count&#x27;</span>,
+          <span class="hljs-string">&#x27;animation-direction&#x27;</span>,
+        ],
+      &#125;,
+    ],
+  &#125;,
+&#125;;</code></pre></div>
+
+</details>
+
+<h2 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript"></a>Javascript</h2><ol>
+<li>使用两个空格缩进，一行最好不超过 80 个字符。</li>
+<li>使用单引号表示字符串，如果有变量应使用字符串模板而不是连接符。</li>
+<li>普通变量命名应该<code>小写驼峰</code>形式；类、工厂函数都应该用<code>大写驼峰</code>，常量应全大写+下滑线分隔单词。</li>
+<li>枚举类应该以<code>Enum</code>开头<code>大写驼峰</code>，接口应该以<code>I</code>开头<code>大写驼峰</code>。</li>
+<li>优先使用 es6 中语法格式，即对象内可以简写 function，尽量使用 const 然后再是 let 等。</li>
+<li>语句末尾必须带分号。</li>
+<li>条件语句内块级作用域必须带{}。</li>
+<li>对象应静态化，即声明时就声明所有属性，如果需要后期添加属性应使用合并（Object.assign）。</li>
+<li>尽量使用全等（===）。</li>
+<li>对象、数组属性换行后最后一项需要加逗号</li>
+</ol>
+<details>
+  <summary>tips: 通用js的eslint</summary>
+
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = &#123;
+  env: &#123;
+    browser: <span class="hljs-literal">true</span>,
+    node: <span class="hljs-literal">true</span>,
+    es6: <span class="hljs-literal">true</span>,
+  &#125;,
+  <span class="hljs-keyword">extends</span>: [<span class="hljs-string">&#x27;eslint:recommended&#x27;</span>],
+  plugins: [<span class="hljs-string">&#x27;html&#x27;</span>, <span class="hljs-string">&#x27;flowtype&#x27;</span>],
+  parserOptions: &#123;
+    ecmaVersion: <span class="hljs-number">2018</span>,
+    sourceType: <span class="hljs-string">&#x27;module&#x27;</span>,
+    ecmaFeatures: &#123;
+      jsx: <span class="hljs-literal">true</span>,
+      legacyDecorators: <span class="hljs-literal">true</span>,
+    &#125;,
+  &#125;,
+  rules: &#123;
+    <span class="hljs-string">&#x27;no-console&#x27;</span>: process.env.NODE_ENV === <span class="hljs-string">&#x27;production&#x27;</span> ? <span class="hljs-string">&#x27;error&#x27;</span> : <span class="hljs-string">&#x27;off&#x27;</span>, <span class="hljs-comment">// 禁止console</span>
+    <span class="hljs-string">&#x27;no-debugger&#x27;</span>: process.env.NODE_ENV === <span class="hljs-string">&#x27;production&#x27;</span> ? <span class="hljs-string">&#x27;error&#x27;</span> : <span class="hljs-string">&#x27;off&#x27;</span>, <span class="hljs-comment">// 禁止debugger</span>
+    <span class="hljs-string">&#x27;no-unused-vars&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止定义未使用的变量</span>
+    <span class="hljs-comment">// &#x27;no-extra-parens&#x27;: [</span>
+    <span class="hljs-comment">//   &#x27;warn&#x27;,</span>
+    <span class="hljs-comment">//   &#x27;all&#x27;,</span>
+    <span class="hljs-comment">//   &#123; enforceForArrowConditionals: false, ignoreJSX: &#x27;multi-line&#x27; &#125;,</span>
+    <span class="hljs-comment">// ], // 禁止不必要的括号</span>
+    <span class="hljs-string">&#x27;no-template-curly-in-string&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止在常规字符串中出现模板字面量占位符语法</span>
+    <span class="hljs-string">&#x27;array-callback-return&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 强制数组方法的回调函数中有 return 语句</span>
+    <span class="hljs-string">&#x27;block-scoped-var&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 强制把变量的使用限制在其定义的作用域范围内</span>
+    curly: [<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-string">&#x27;all&#x27;</span>], <span class="hljs-comment">// 强制所有控制语句使用一致的括号风格</span>
+    <span class="hljs-string">&#x27;default-case&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 要求 switch 语句中有 default 分支</span>
+    <span class="hljs-string">&#x27;dot-location&#x27;</span>: [<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-string">&#x27;property&#x27;</span>], <span class="hljs-comment">// 强制在点号之前和之后一致的换行</span>
+    <span class="hljs-string">&#x27;dot-notation&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 强制尽可能地使用点号</span>
+    <span class="hljs-string">&#x27;no-caller&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁用 arguments.caller 或 arguments.callee</span>
+    <span class="hljs-string">&#x27;no-eq-null&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止在没有类型检查操作符的情况下与 null 进行比较</span>
+    <span class="hljs-string">&#x27;no-empty&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止空块语句</span>
+    <span class="hljs-string">&#x27;no-eval&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁用 eval()</span>
+    <span class="hljs-string">&#x27;no-extend-native&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止扩展原生类型</span>
+    <span class="hljs-string">&#x27;no-extra-bind&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止无意义bind</span>
+    <span class="hljs-string">&#x27;no-floating-decimal&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止数字字面量中使用前导和末尾小数点</span>
+    <span class="hljs-string">&#x27;no-implied-eval&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止使用类似 eval() 的方法</span>
+    <span class="hljs-comment">// &#x27;no-magic-numbers&#x27;: [&#x27;warn&#x27;, &#123; ignoreArrayIndexes: true &#125;], // 禁止魔术数</span>
+    <span class="hljs-string">&#x27;no-multi-spaces&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止使用多个空格</span>
+    <span class="hljs-string">&#x27;no-multi-str&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止使用多行字符串</span>
+    <span class="hljs-string">&#x27;no-self-compare&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止自身比较</span>
+    <span class="hljs-string">&#x27;no-useless-call&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止不必要的 .call() 和 .apply()</span>
+    <span class="hljs-string">&#x27;no-unused-expressions&#x27;</span>: [<span class="hljs-string">&#x27;error&#x27;</span>, &#123; <span class="hljs-attr">allowShortCircuit</span>: <span class="hljs-literal">true</span> &#125;], <span class="hljs-comment">// 禁止出现未使用过的表达式</span>
+    <span class="hljs-string">&#x27;no-unmodified-loop-condition&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁用一成不变的循环条件</span>
+    <span class="hljs-string">&#x27;no-sequences&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁用逗号操作符</span>
+    <span class="hljs-string">&#x27;no-useless-return&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止多余的 return 语句</span>
+    <span class="hljs-string">&#x27;require-await&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止使用不带 await 表达式的 async 函数</span>
+    <span class="hljs-comment">// &#x27;no-undefined&#x27;: &#x27;error&#x27;, // 禁止将 undefined 作为标识符</span>
+    <span class="hljs-string">&#x27;no-use-before-define&#x27;</span>: [<span class="hljs-string">&#x27;error&#x27;</span>, &#123; <span class="hljs-attr">classes</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">functions</span>: <span class="hljs-literal">false</span> &#125;], <span class="hljs-comment">// 禁止在变量定义之前使用它们</span>
+    <span class="hljs-string">&#x27;no-const-assign&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止修改 const 声明的变量</span>
+    <span class="hljs-string">&#x27;no-dupe-class-members&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止类成员中出现重复的名称</span>
+    <span class="hljs-string">&#x27;no-duplicate-imports&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止重复导入</span>
+    <span class="hljs-string">&#x27;no-var&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止使用var</span>
+    <span class="hljs-string">&#x27;no-useless-escape&#x27;</span>: <span class="hljs-string">&#x27;off&#x27;</span>, <span class="hljs-comment">// 无意义的转意</span>
+
+    <span class="hljs-comment">// 样式类</span>
+    <span class="hljs-string">&#x27;brace-style&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;1tbs&#x27;</span>, &#123; <span class="hljs-attr">allowSingleLine</span>: <span class="hljs-literal">true</span> &#125;], <span class="hljs-comment">// 大括号风格要求</span>
+    <span class="hljs-string">&#x27;block-spacing&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;always&#x27;</span>], <span class="hljs-comment">// 强制在代码块中开括号前和闭括号后有空格</span>
+    camelcase: [<span class="hljs-string">&#x27;warn&#x27;</span>, &#123; <span class="hljs-attr">properties</span>: <span class="hljs-string">&#x27;never&#x27;</span>, <span class="hljs-attr">ignoreDestructuring</span>: <span class="hljs-literal">true</span> &#125;], <span class="hljs-comment">//强制使用骆驼拼写法命名约定</span>
+    <span class="hljs-string">&#x27;comma-dangle&#x27;</span>: [
+      <span class="hljs-string">&#x27;warn&#x27;</span>,
+      &#123;
+        arrays: <span class="hljs-string">&#x27;always-multiline&#x27;</span>,
+        objects: <span class="hljs-string">&#x27;always-multiline&#x27;</span>,
+        imports: <span class="hljs-string">&#x27;always-multiline&#x27;</span>,
+        <span class="hljs-built_in">exports</span>: <span class="hljs-string">&#x27;always-multiline&#x27;</span>,
+        functions: <span class="hljs-string">&#x27;never&#x27;</span>,
+      &#125;,
+    ], <span class="hljs-comment">// 要求使用拖尾逗号</span>
+    <span class="hljs-string">&#x27;comma-spacing&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, &#123; <span class="hljs-attr">before</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">after</span>: <span class="hljs-literal">true</span> &#125;], <span class="hljs-comment">// 强制在逗号周围使用空格</span>
+    <span class="hljs-string">&#x27;eol-last&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;always&#x27;</span>], <span class="hljs-comment">// 要求文件末尾保留一行空行</span>
+    <span class="hljs-string">&#x27;func-call-spacing&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;never&#x27;</span>], <span class="hljs-comment">// 要求在函数标识符和其调用之间有空格</span>
+    indent: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-number">2</span>, &#123; <span class="hljs-attr">SwitchCase</span>: <span class="hljs-number">1</span> &#125;], <span class="hljs-comment">// 强制使用一致的缩进</span>
+    <span class="hljs-string">&#x27;jsx-quotes&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;prefer-double&#x27;</span>], <span class="hljs-comment">// 强制在 JSX 属性中使用一致的双引号</span>
+    <span class="hljs-string">&#x27;new-cap&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, &#123; <span class="hljs-attr">capIsNew</span>: <span class="hljs-literal">false</span> &#125;], <span class="hljs-comment">// 要求构造函数首字母大写</span>
+    <span class="hljs-string">&#x27;no-multi-assign&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止连续赋值</span>
+    <span class="hljs-string">&#x27;no-multiple-empty-lines&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, &#123; <span class="hljs-attr">max</span>: <span class="hljs-number">2</span> &#125;], <span class="hljs-comment">// 不允许多个空行</span>
+    <span class="hljs-string">&#x27;no-unneeded-ternary&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止可以表达为更简单结构的三元操作符</span>
+    <span class="hljs-string">&#x27;no-whitespace-before-property&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止属性前有空白</span>
+    <span class="hljs-string">&#x27;quote-props&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;as-needed&#x27;</span>], <span class="hljs-comment">// 要求对象字面量属性名称使用引号</span>
+    quotes: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;single&#x27;</span>], <span class="hljs-comment">// 强制使用一致的单引号</span>
+    semi: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;always&#x27;</span>], <span class="hljs-comment">// 使用分号代替 ASI</span>
+    <span class="hljs-string">&#x27;arrow-body-style&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;as-needed&#x27;</span>], <span class="hljs-comment">// 要求箭头函数体使用大括号</span>
+    <span class="hljs-string">&#x27;arrow-parens&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;as-needed&#x27;</span>], <span class="hljs-comment">// 要求箭头函数的参数使用圆括号</span>
+    <span class="hljs-string">&#x27;arrow-spacing&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, &#123; <span class="hljs-attr">before</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">after</span>: <span class="hljs-literal">true</span> &#125;], <span class="hljs-comment">// 要求箭头函数的箭头之前或之后有空格</span>
+    <span class="hljs-string">&#x27;no-confusing-arrow&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, &#123; <span class="hljs-attr">allowParens</span>: <span class="hljs-literal">true</span> &#125;], <span class="hljs-comment">// 禁止在可能与比较操作符相混淆的地方使用箭头函数</span>
+    <span class="hljs-string">&#x27;prefer-const&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 求使用 const 声明那些声明后不再被修改的变量</span>
+    <span class="hljs-string">&#x27;symbol-description&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 要求 symbol 描述</span>
+    <span class="hljs-string">&#x27;space-before-function-paren&#x27;</span>: [
+      <span class="hljs-string">&#x27;error&#x27;</span>,
+      &#123; <span class="hljs-attr">anonymous</span>: <span class="hljs-string">&#x27;ignore&#x27;</span>, <span class="hljs-attr">named</span>: <span class="hljs-string">&#x27;ignore&#x27;</span> &#125;,
+    ], <span class="hljs-comment">// 要求剪头函数前需要空格</span>
+    <span class="hljs-string">&#x27;new-parens&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 要求new一定带函数符</span>
+  &#125;,
+&#125;;</code></pre></div>
+
+</details>
+
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p><a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/style-guide/">vue 风格指南</a></p>
+<ol>
+<li>减少使用 directive 和 mixin。</li>
+<li>v-for 指令下 key 尽量不使用 index。</li>
+<li>vue-html 属性应为小写+横杠连字符，props 声明内为小写驼峰，emit 的事件名也须为小写+横杠。</li>
+<li>vue-html 内不应该出现函数调用。</li>
+<li>声明的函数功能应该有顺序性，即<code>读取接口</code>、<code>数据处理</code>、<code>事件绑定</code>。</li>
+<li>不要在 vue-html 内写过多逻辑或者内联样式。</li>
+</ol>
+<details>
+  <summary>tips: vue项目的eslint</summary>
+
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = &#123;
+  env: &#123;
+    browser: <span class="hljs-literal">true</span>,
+    node: <span class="hljs-literal">true</span>,
+    es6: <span class="hljs-literal">true</span>,
+  &#125;,
+  parser: <span class="hljs-string">&#x27;vue-eslint-parser&#x27;</span>,
+  parserOptions: &#123;
+    parser: <span class="hljs-string">&#x27;babel-eslint&#x27;</span>,
+    ecmaVersion: <span class="hljs-number">2018</span>,
+    sourceType: <span class="hljs-string">&#x27;module&#x27;</span>,
+    ecmaFeatures: &#123;
+      jsx: <span class="hljs-literal">true</span>,
+      legacyDecorators: <span class="hljs-literal">true</span>,
+    &#125;,
+  &#125;,
+  <span class="hljs-keyword">extends</span>: [<span class="hljs-string">&#x27;plugin:vue/essential&#x27;</span>, <span class="hljs-string">&#x27;./eslintrc.default.js&#x27;</span>],
+  plugins: [<span class="hljs-string">&#x27;vue&#x27;</span>],
+  rules: &#123;
+    <span class="hljs-string">&#x27;vue/attribute-hyphenation&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// vue属性使用连字符</span>
+    <span class="hljs-string">&#x27;vue/html-closing-bracket-newline&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// vue-html标签闭合符换行</span>
+    <span class="hljs-string">&#x27;vue/html-end-tags&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// vue标签强制闭合</span>
+    <span class="hljs-string">&#x27;vue/no-multi-spaces&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 不允许多个空格</span>
+    <span class="hljs-string">&#x27;vue/name-property-casing&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;PascalCase&#x27;</span>], <span class="hljs-comment">// vue组件名称强制驼峰</span>
+    <span class="hljs-string">&#x27;vue/no-spaces-around-equal-signs-in-attribute&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 属性值前后不能有空格</span>
+    <span class="hljs-string">&#x27;vue/html-quotes&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;double&#x27;</span>, &#123; <span class="hljs-attr">avoidEscape</span>: <span class="hljs-literal">false</span> &#125;], <span class="hljs-comment">// html属性强制双引号</span>
+    <span class="hljs-string">&#x27;vue/v-on-style&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;shorthand&#x27;</span>], <span class="hljs-comment">// v-on推荐简写</span>
+    <span class="hljs-string">&#x27;vue/v-bind-style&#x27;</span>: [<span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-string">&#x27;shorthand&#x27;</span>], <span class="hljs-comment">// v-bind推荐简写</span>
+    <span class="hljs-string">&#x27;vue/order-in-components&#x27;</span>: [
+      <span class="hljs-string">&#x27;warn&#x27;</span>,
+      &#123;
+        order: [
+          <span class="hljs-string">&#x27;el&#x27;</span>,
+          <span class="hljs-string">&#x27;name&#x27;</span>,
+          <span class="hljs-string">&#x27;parent&#x27;</span>,
+          <span class="hljs-string">&#x27;functional&#x27;</span>,
+          [<span class="hljs-string">&#x27;delimiters&#x27;</span>, <span class="hljs-string">&#x27;comments&#x27;</span>],
+          [<span class="hljs-string">&#x27;components&#x27;</span>, <span class="hljs-string">&#x27;directives&#x27;</span>, <span class="hljs-string">&#x27;filters&#x27;</span>],
+          <span class="hljs-string">&#x27;extends&#x27;</span>,
+          <span class="hljs-string">&#x27;mixins&#x27;</span>,
+          <span class="hljs-string">&#x27;inheritAttrs&#x27;</span>,
+          <span class="hljs-string">&#x27;model&#x27;</span>,
+          [<span class="hljs-string">&#x27;props&#x27;</span>, <span class="hljs-string">&#x27;propsData&#x27;</span>],
+          <span class="hljs-string">&#x27;data&#x27;</span>,
+          <span class="hljs-string">&#x27;computed&#x27;</span>,
+          <span class="hljs-string">&#x27;watch&#x27;</span>,
+          <span class="hljs-string">&#x27;LIFECYCLE_HOOKS&#x27;</span>,
+          <span class="hljs-string">&#x27;methods&#x27;</span>,
+          [<span class="hljs-string">&#x27;template&#x27;</span>, <span class="hljs-string">&#x27;render&#x27;</span>],
+          <span class="hljs-string">&#x27;renderError&#x27;</span>,
+        ],
+      &#125;,
+    ], <span class="hljs-comment">// vue组件强制属性顺序</span>
+    <span class="hljs-string">&#x27;vue/no-boolean-default&#x27;</span>: [<span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-string">&#x27;default-false&#x27;</span>], <span class="hljs-comment">// 布尔值props必须是否的默认值</span>
+    <span class="hljs-string">&#x27;vue/padding-line-between-blocks&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// vue文件两个块直接保持空格</span>
+    <span class="hljs-string">&#x27;vue/no-reserved-component-names&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止使用保留名作为组件名</span>
+    <span class="hljs-string">&#x27;vue/no-parsing-error&#x27;</span>: [
+      <span class="hljs-string">&#x27;warn&#x27;</span>,
+      &#123;
+        <span class="hljs-string">&#x27;invalid-first-character-of-tag-name&#x27;</span>: <span class="hljs-literal">false</span>,
+      &#125;,
+    ], <span class="hljs-comment">// 模板解析错误</span>
+  &#125;,
+&#125;;</code></pre></div>
+
+</details>
+
+<h2 id="React"><a href="#React" class="headerlink" title="React"></a>React</h2><ol>
+<li>类组件方法可以用箭头函数定义，但是在通用组件内应尽量使用 construtor 内 bind 改变 this 指向的写法。</li>
+<li>不允许在 setState 外更改 state，包括其引用。</li>
+<li>应该在 componentDidMount 或 componentDidUpdate 时机读取接口。</li>
+<li>componentDidUpdate 如果涉及视图更新，应注意添加条件判断。</li>
+<li>循环渲染的 dom 需要加 key，尽量不使用 index。</li>
+<li>声明的函数功能应该有顺序性，即<code>读取接口</code>、<code>数据处理</code>、<code>事件绑定</code>。</li>
+</ol>
+<details>
+  <summary>tips: react项目的eslint</summary>
+
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-built_in">module</span>.exports = &#123;
+  root: <span class="hljs-literal">true</span>,
+  env: &#123;
+    browser: <span class="hljs-literal">true</span>,
+    commonjs: <span class="hljs-literal">true</span>,
+    es6: <span class="hljs-literal">true</span>,
+    jest: <span class="hljs-literal">true</span>,
+    node: <span class="hljs-literal">true</span>,
+  &#125;,
+  parser: <span class="hljs-string">&#x27;babel-eslint&#x27;</span>,
+  parserOptions: &#123;
+    ecmaVersion: <span class="hljs-number">2018</span>,
+    sourceType: <span class="hljs-string">&#x27;module&#x27;</span>,
+    ecmaFeatures: &#123;
+      jsx: <span class="hljs-literal">true</span>,
+    &#125;,
+  &#125;,
+  settings: &#123;
+    react: &#123;
+      version: <span class="hljs-string">&#x27;detect&#x27;</span>,
+    &#125;,
+  &#125;,
+  globals: &#123;
+    __DEV__: <span class="hljs-literal">false</span>,
+  &#125;,
+  <span class="hljs-keyword">extends</span>: [<span class="hljs-string">&#x27;./eslintrc.default.js&#x27;</span>],
+  plugins: [<span class="hljs-string">&#x27;import&#x27;</span>, <span class="hljs-string">&#x27;react&#x27;</span>, <span class="hljs-string">&#x27;jsx-a11y&#x27;</span>],
+  rules: &#123;
+    indent: [<span class="hljs-string">&#x27;off&#x27;</span>, <span class="hljs-number">2</span>, &#123; <span class="hljs-attr">SwitchCase</span>: <span class="hljs-number">1</span> &#125;], <span class="hljs-comment">// 强制使用一致的缩进</span>
+
+    <span class="hljs-string">&#x27;react/no-access-state-in-setstate&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// setState中不能用state</span>
+    <span class="hljs-string">&#x27;react/no-adjacent-inline-elements&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 防止相邻的内联元素不被空格分隔</span>
+    <span class="hljs-string">&#x27;react/no-children-prop&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 不使用children属性</span>
+    <span class="hljs-string">&#x27;react/no-deprecated&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止使用不推荐的方法</span>
+    <span class="hljs-string">&#x27;react/no-will-update-set-state&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止在componentWillUpdate中setState</span>
+    <span class="hljs-string">&#x27;react/no-direct-mutation-state&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止修改state</span>
+    <span class="hljs-string">&#x27;react/no-is-mounted&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 不允许使用isMount</span>
+    <span class="hljs-string">&#x27;react/no-multi-comp&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 单文件只能有一个组件</span>
+    <span class="hljs-string">&#x27;react/no-redundant-should-component-update&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 禁止在PureComponent中使用shouldComponentUpdate</span>
+    <span class="hljs-string">&#x27;react/no-string-refs&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 不允许使用字符串ref</span>
+    <span class="hljs-string">&#x27;react/no-this-in-sfc&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 禁止在无状态组件中使用this</span>
+    <span class="hljs-string">&#x27;react/no-typos&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 防止属性输入打错字</span>
+    <span class="hljs-string">&#x27;react/no-unescaped-entities&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 防止出现无效字符</span>
+    <span class="hljs-string">&#x27;react/no-unknown-property&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 防止使用未知的DOM属性</span>
+    <span class="hljs-string">&#x27;react/prefer-es6-class&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 使用es6类定义组件</span>
+    <span class="hljs-string">&#x27;react/require-render-return&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// render需要返回</span>
+    <span class="hljs-string">&#x27;react/sort-comp&#x27;</span>: [
+      <span class="hljs-string">&#x27;warn&#x27;</span>,
+      &#123;
+        order: [<span class="hljs-string">&#x27;static-methods&#x27;</span>, <span class="hljs-string">&#x27;lifecycle&#x27;</span>, <span class="hljs-string">&#x27;everything-else&#x27;</span>, <span class="hljs-string">&#x27;render&#x27;</span>],
+        groups: &#123;
+          lifecycle: [
+            <span class="hljs-string">&#x27;displayName&#x27;</span>,
+            <span class="hljs-string">&#x27;propTypes&#x27;</span>,
+            <span class="hljs-string">&#x27;contextTypes&#x27;</span>,
+            <span class="hljs-string">&#x27;childContextTypes&#x27;</span>,
+            <span class="hljs-string">&#x27;mixins&#x27;</span>,
+            <span class="hljs-string">&#x27;statics&#x27;</span>,
+            <span class="hljs-string">&#x27;defaultProps&#x27;</span>,
+            <span class="hljs-string">&#x27;state&#x27;</span>,
+            <span class="hljs-string">&#x27;constructor&#x27;</span>,
+            <span class="hljs-string">&#x27;getDefaultProps&#x27;</span>,
+            <span class="hljs-string">&#x27;getInitialState&#x27;</span>,
+            <span class="hljs-string">&#x27;getChildContext&#x27;</span>,
+            <span class="hljs-string">&#x27;getDerivedStateFromProps&#x27;</span>,
+            <span class="hljs-string">&#x27;componentWillMount&#x27;</span>,
+            <span class="hljs-string">&#x27;UNSAFE_componentWillMount&#x27;</span>,
+            <span class="hljs-string">&#x27;componentDidMount&#x27;</span>,
+            <span class="hljs-string">&#x27;componentWillReceiveProps&#x27;</span>,
+            <span class="hljs-string">&#x27;UNSAFE_componentWillReceiveProps&#x27;</span>,
+            <span class="hljs-string">&#x27;shouldComponentUpdate&#x27;</span>,
+            <span class="hljs-string">&#x27;componentWillUpdate&#x27;</span>,
+            <span class="hljs-string">&#x27;UNSAFE_componentWillUpdate&#x27;</span>,
+            <span class="hljs-string">&#x27;getSnapshotBeforeUpdate&#x27;</span>,
+            <span class="hljs-string">&#x27;componentDidUpdate&#x27;</span>,
+            <span class="hljs-string">&#x27;componentDidCatch&#x27;</span>,
+            <span class="hljs-string">&#x27;componentWillUnmount&#x27;</span>,
+          ],
+        &#125;,
+      &#125;,
+    ], <span class="hljs-comment">// 规定组件属性顺序</span>
+    <span class="hljs-string">&#x27;react/style-prop-object&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 要求样式为对象</span>
+    <span class="hljs-string">&#x27;react/void-dom-elements-no-children&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 防止空元素传children</span>
+    <span class="hljs-string">&#x27;react/jsx-boolean-value&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 布尔值尽可能不传true</span>
+    <span class="hljs-string">&#x27;react/jsx-key&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 循环dom需要设置key</span>
+    <span class="hljs-comment">// &#x27;react/jsx-no-bind&#x27;: [</span>
+    <span class="hljs-comment">//   &#x27;warn&#x27;,</span>
+    <span class="hljs-comment">//   &#123; ignoreDOMComponents: true, ignoreRefs: true &#125;,</span>
+    <span class="hljs-comment">// ], // 阻止jsx中编写函数</span>
+    <span class="hljs-string">&#x27;react/jsx-no-duplicate-props&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// jsx不允许相同属性</span>
+    <span class="hljs-string">&#x27;react/jsx-no-script-url&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// jsx不允许a扁鹊的javascript：</span>
+    <span class="hljs-string">&#x27;react/jsx-no-undef&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// 不允许未定义就使用的组件</span>
+    <span class="hljs-string">&#x27;react/jsx-no-useless-fragment&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 阻止无意义的fragment</span>
+    <span class="hljs-string">&#x27;react/jsx-pascal-case&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 组件必须驼峰</span>
+    <span class="hljs-string">&#x27;react/jsx-props-no-multi-spaces&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// 属性名间不允许过多空格</span>
+    <span class="hljs-string">&#x27;react/jsx-uses-react&#x27;</span>: <span class="hljs-string">&#x27;warn&#x27;</span>, <span class="hljs-comment">// jsx需要React变量</span>
+    <span class="hljs-string">&#x27;react/jsx-uses-vars&#x27;</span>: <span class="hljs-string">&#x27;error&#x27;</span>, <span class="hljs-comment">// jsx引用变量前定义</span>
+  &#125;,
+&#125;;</code></pre></div>
+
+</details>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Javascript/">Javascript</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/css/">css</a>
+                    
+                      <a class="hover-with-bg" href="/tags/html/">html</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                      <a class="hover-with-bg" href="/tags/React/">React</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E4%BB%8E%E6%A0%87%E5%87%86%E5%AE%9E%E7%8E%B0%E5%85%A5%E6%89%8B%E7%90%86%E8%A7%A3%20Promise/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从标准实现入手理解 Promise</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2"></div>
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <!-- <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div> -->
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            
+            <span id="busuanzi_value_site_pv"></span>
+             
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            
+            <span id="busuanzi_value_site_uv"></span>
+             
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "前端代码规范&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "left",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

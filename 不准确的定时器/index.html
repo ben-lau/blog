@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/weather.png">
+  <link rel="icon" type="image/png" href="/images/weather.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Ben Lau">
+  <meta name="keywords" content="">
+  <title>不准确的定时器 - Ben Lau&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Ben Lau's space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/bg-clock.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-30 16:49" pubdate>
+        2020年9月30日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      44
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    
+      <div class="d-none d-lg-block col-lg-2 ml-3 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">不准确的定时器</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：9 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="不准确的定时器"><a href="#不准确的定时器" class="headerlink" title="不准确的定时器"></a>不准确的定时器</h1><h3 id="什么是定时器"><a href="#什么是定时器" class="headerlink" title="什么是定时器"></a>什么是定时器</h3><p>javascript 的 globalThis 中，分别有三个 api：<code>setTimeout</code>、<code>setInterval</code>、<code>setImmediate</code>，他们都是定时器的一种，意思是允许在某个时刻开始执行，尽管他们看上去很相似，不过其实各不相同，甚至在不同运行环境也各自不同。</p>
+<ul>
+<li>setTimeout：用于设置一个定时器，在到期后执行一个函数。</li>
+<li>setInterval：用于设置一个轮训定时器，重复调用一个函数并在每次调用之间具有固定间隔。</li>
+<li>setImmediate：用于设置一个立刻执行器，在当前事件轮询中任何 i/o 操作后，在任何下一轮定时器开始前执行。</li>
+</ul>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><ul>
+<li>setTimeout 和 setInterval 语法相当</li>
+</ul>
+<div class="hljs"><pre><code class="hljs javascript">var timeoutID = setTimeout(function[, delay, arg1, arg2, ...]);
+<span class="hljs-keyword">var</span> timeoutID = <span class="hljs-built_in">setTimeout</span>(code[, delay, arg1, arg2, ...]);
+
+var intervalID = setInterval(function[, delay, arg1, arg2, ...]);
+<span class="hljs-keyword">var</span> intervalID = <span class="hljs-built_in">setInterval</span>(code[, delay, arg1, arg2, ...]);</code></pre></div>
+
+<p>第一个参数为回调函数，在 <code>WindowOrWorkerGlobalScope</code>下可以为<strong>脚本字符串</strong>（node 中不支持），如果为字符串则会被类似 eval()调用，非常不推荐。<br>第二个参数为<code>可选</code>的延迟毫秒数（1 秒为 1000 毫秒），如果省略该参数则默认为 0。<br>第三个往后的参数为<code>可选</code>的附加参数，会被作为参数传入 function 中。</p>
+<ul>
+<li>setImmidate 语法</li>
+</ul>
+<div class="hljs"><pre><code class="hljs javascript">var immediateID = setImmediate(function[, arg1, arg2, ...]);</code></pre></div>
+
+<p>这里除了没延迟毫秒数外与 setTimeout 和 setInterval 差不多。此 api 在浏览器环境为非标准 api，尽量不在浏览器环境中使用。该 api 受到了 Gecko 和 Webkit 的阻力，可能未来也不会被纳入标准中。</p>
+<p>可以通过 <code>MessageChannel</code> 或者 <code>postMessage</code> 来模拟一个 setImmediate。<strong>本篇文章不着重讲此 api</strong>。</p>
+<h3 id="不准确是怎么回事"><a href="#不准确是怎么回事" class="headerlink" title="不准确是怎么回事"></a>不准确是怎么回事</h3><p>有很多因素会导致定时器的回调函数执行比设定的预期值更久，下面会分别讲解：</p>
+<h4 id="最小间隔-4ms"><a href="#最小间隔-4ms" class="headerlink" title="最小间隔 4ms"></a>最小间隔 4ms</h4><p>在 HTML5 规范中，setTimeout 和 setInterval 被设定为最小间隔为 <code>4ms</code>（在<a target="_blank" rel="noopener" href="https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers">HTML5 spec</a>中被精确），这种通常是因为被函数阻塞或者函数嵌套级别到了一定深度导致的。例如：</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cb</span>(<span class="hljs-params"></span>) </span>&#123;
+  f();
+  <span class="hljs-built_in">setTimeout</span>(cb, <span class="hljs-number">0</span>);
+&#125;
+<span class="hljs-built_in">setTimeout</span>(cb, <span class="hljs-number">0</span>);
+<span class="hljs-comment">// 或</span>
+<span class="hljs-built_in">setInterval</span>(f, <span class="hljs-number">0</span>);</code></pre></div>
+
+<p>在 Chrome 和 Firefox 中，定时器的第五次会被阻塞，Safari 是第六次，Edge 在第三次。</p>
+<p>而最小延时，由<code>DOM_MIN_TIMEOUT_VALUE</code>（Firefox 在<code>dom.min_timeout_value</code>）这个变量控制，而 node 为了与浏览器行为对齐，设置了最低<a target="_blank" rel="noopener" href="https://github.com/nodejs/node/blob/v8.9.4/lib/timers.js#L456">1ms 的间隔</a>。</p>
+<p>所以如果测试一下 setTimeout 递归 60 次（模拟 60 秒），电脑为 MacBook Pro (13-inch, 2019, Four Thunderbolt 3 ports)：</p>
+<div class="hljs"><pre><code class="hljs javascript">(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">let</span> n2 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> tick2 = <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+      n2++;
+      <span class="hljs-keyword">if</span> (n2 === <span class="hljs-number">60</span>) &#123;
+        <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;setTimeout&#x27;</span>);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        tick2();
+      &#125;
+    &#125;, <span class="hljs-number">1000</span>);
+  &#125;;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;setTimeout&#x27;</span>);
+  tick2();
+&#125;)();</code></pre></div>
+
+<p>在<code>chrome85</code>中时间为：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/setTimeout-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+<p>总共是有 155ms 的延迟。</p>
+<p>在<code>node v12.18.3</code>中时间为：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/setTimeout-node-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+<p>总共是有 163ms 的延迟。</p>
+<h4 id="未被激的会话窗最小延迟-1000ms"><a href="#未被激的会话窗最小延迟-1000ms" class="headerlink" title="未被激的会话窗最小延迟 1000ms"></a>未被激的会话窗最小延迟 1000ms</h4><p>这是浏览器为了优化后台 tab 的加载损耗（或者说降低耗电量），对不在前台的会话窗最小延迟限制为 1000ms</p>
+<p>我们可以继续测试一下上面的代码，全程把页面放入后台中，在<code>chrome85</code>中时间为：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/setTimeout-background-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+<p>总共是有 39396ms(39s) 的延迟。</p>
+<h4 id="最大间隔为-2147483647ms"><a href="#最大间隔为-2147483647ms" class="headerlink" title="最大间隔为 2147483647ms"></a>最大间隔为 2147483647ms</h4><p>这个就不测试了，很简单就是 <code>2^31 - 1</code>毫秒，因为浏览器内部以 32 位整数存储延时，这样会导致定时器立刻执行。</p>
+<h3 id="解决延迟"><a href="#解决延迟" class="headerlink" title="解决延迟"></a>解决延迟</h3><p><strong>讲道理这个很难</strong>，因为作为一个单线程语言，可能会在任何时间内被阻塞，按道理无法保证其时间准确性。</p>
+<h4 id="requestTimeout"><a href="#requestTimeout" class="headerlink" title="requestTimeout"></a>requestTimeout</h4><p>但是可以用一些自动或者动态修正的方法去减少误差，我们可以先实现一个 requestTimeout，先做个流程图</p>
+<pre><code class="hljs mermaid">graph TB
+    start[设置定时器] --传入回调函数和间隔时间--&gt; 记录当前时间戳
+    记录当前时间戳 --&gt; 计算出目标时间戳
+    计算出目标时间戳 --&gt; 计算出剩余间隔时间&#123;计算出剩余间隔时间&#125;
+    计算出剩余间隔时间&#123;计算出剩余间隔时间&#125; --大于边界时间--&gt; 切分剩余时间
+    计算出剩余间隔时间&#123;计算出剩余间隔时间&#125; --小于边界时间--&gt; 按剩余间隔时间延迟执行
+    切分剩余时间 --&gt; 用切分出的时间延迟执行
+    用切分出的时间延迟执行 --&gt; 记录当前时间戳
+    按剩余间隔时间延迟执行 --&gt; 结束
+</code></pre>
+
+<p>这样其实也只能将间隔时间缩得足够小，每一次切分其实都是重新拿时间戳去对照了。</p>
+<p>代码实现：</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> &#123; requestTimeout, cancelTimeout &#125; = (<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-comment">// 建立的任务表</span>
+  <span class="hljs-keyword">const</span> cacheMap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+  <span class="hljs-comment">// 获取当前相对时间戳</span>
+  <span class="hljs-keyword">const</span> getNow =
+    <span class="hljs-keyword">typeof</span> process !== <span class="hljs-string">&#x27;undefined&#x27;</span>
+      ? <span class="hljs-function">() =&gt;</span> process.uptime() * <span class="hljs-number">1000</span>
+      : <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> Event(<span class="hljs-string">&#x27;&#x27;</span>).timeStamp;
+  <span class="hljs-keyword">const</span> RATIO = <span class="hljs-number">0.1</span>; <span class="hljs-comment">// 拆解timer时间系数</span>
+  <span class="hljs-keyword">const</span> EDGE = <span class="hljs-number">10</span>; <span class="hljs-comment">// 边界值</span>
+  <span class="hljs-keyword">let</span> id = <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 请求延迟回调</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;Function&#125;</span> </span>fn 回调函数</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> </span>delay 延迟时间</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;boolean&#125;</span> </span>isBlock 是否使用阻塞</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@returns <span class="hljs-type">&#123;number&#125;</span> <span class="hljs-variable">id</span></span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-keyword">const</span> requestTimeout = <span class="hljs-function">(<span class="hljs-params">fn, delay = <span class="hljs-number">0</span>, isBlock = <span class="hljs-literal">false</span></span>) =&gt;</span> &#123;
+    id++;
+    cacheMap.set(id, &#123; <span class="hljs-attr">pause</span>: <span class="hljs-literal">false</span> &#125;);
+    <span class="hljs-comment">// 获取是否允许继续</span>
+    <span class="hljs-keyword">const</span> getAllowContinue = <span class="hljs-function">() =&gt;</span> !cacheMap.get(id).pause;
+    <span class="hljs-comment">// 上一次调度器执行的时间戳</span>
+    <span class="hljs-keyword">let</span> previousTimeStamp = getNow();
+    <span class="hljs-comment">// 目标时间戳</span>
+    <span class="hljs-keyword">const</span> targetTimestamp = previousTimeStamp + delay;
+
+    <span class="hljs-comment">// 调度器</span>
+    <span class="hljs-keyword">const</span> requestScheduler = isBlock
+      ? <span class="hljs-function">() =&gt;</span> &#123;
+          <span class="hljs-keyword">if</span> (getAllowContinue()) &#123;
+            <span class="hljs-comment">// 阻塞</span>
+            <span class="hljs-keyword">while</span> (
+              getNow() - previousTimeStamp &lt; delay &amp;&amp;
+              getAllowContinue()
+            ) &#123;&#125;
+            fn();
+          &#125;
+        &#125;
+      : <span class="hljs-function">() =&gt;</span> &#123;
+          <span class="hljs-keyword">if</span> (getAllowContinue()) &#123;
+            previousTimeStamp = getNow();
+            <span class="hljs-comment">// 获取剩余延迟时间</span>
+            <span class="hljs-keyword">const</span> restDelay = targetTimestamp - previousTimeStamp;
+            <span class="hljs-comment">// 判断是否剩余小于边界值的时间</span>
+            <span class="hljs-keyword">const</span> nearTheEdge = restDelay &lt;= EDGE;
+            <span class="hljs-built_in">setTimeout</span>(
+              () =&gt; &#123;
+                nearTheEdge ? fn() : requestScheduler();
+              &#125;,
+              nearTheEdge ? restDelay : restDelay * RATIO
+            );
+          &#125;
+        &#125;;
+
+    requestScheduler();
+    <span class="hljs-keyword">return</span> id;
+  &#125;;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 取消延迟任务</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> </span>id 任务id</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@returns <span class="hljs-type">&#123;void&#125;</span></span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-keyword">const</span> cancelTimeout = <span class="hljs-function"><span class="hljs-params">id</span> =&gt;</span> &#123;
+    <span class="hljs-keyword">if</span> (cacheMap.has(id)) &#123;
+      <span class="hljs-keyword">const</span> cache = cacheMap.get(id);
+      cache.pause = <span class="hljs-literal">true</span>;
+    &#125;
+  &#125;;
+
+  <span class="hljs-keyword">return</span> &#123;
+    requestTimeout,
+    cancelTimeout,
+  &#125;;
+&#125;)();</code></pre></div>
+
+<p>这里实际上还用了阻塞去做延迟执行，这样子更精准点但是会阻塞线程。</p>
+<p>下面可以测试一下执行精度：</p>
+<ul>
+<li><p>浏览器前台：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestTimeout-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+<li><p>浏览器后台：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestTimeout-background-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+<li><p>node：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestTimeout-node-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+</ul>
+<p>requestTimeout 在后台递归的时候表现更差了，这是因为本身就被浏览器延迟了，但是单次执行的准确度还是比 setTimeout 高的。</p>
+<ul>
+<li><p>setTimeout 单次：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/setTimeout.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+<li><p>requestTimeout 单次：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestTimeout.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+</ul>
+<h4 id="requestInterval"><a href="#requestInterval" class="headerlink" title="requestInterval"></a>requestInterval</h4><p>interval 倒是完全可以减少误差的，办法就是每次都获取上一次的真实间隔时间，然后再动态更改下一次的延迟即可。根据这个想法做个流程图：</p>
+<pre><code class="hljs mermaid">graph TB
+    start[设置定时器] --传入回调函数和间隔时间--&gt; 记录当前时间戳
+    记录当前时间戳 --&gt; 调度器执行
+    调度器执行 --&gt; 获取执行时时间戳
+    获取执行时时间戳 --&gt; 计算出差值并计算出下次间隔时间
+    计算出差值并计算出下次间隔时间 --&gt; 按新的间隔时间延迟执行
+    按新的间隔时间延迟执行 --&gt; 将执行时间戳替换了上次时间戳
+    将执行时间戳替换了上次时间戳 --&gt; 记录当前时间戳</code></pre>
+
+<p>延迟执行可以利用上面实现的 requestTimeout，按流程图实现代码：</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> &#123; requestInterval, cancelInterval &#125; = (<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-comment">// 建立的任务表</span>
+  <span class="hljs-keyword">const</span> cacheMap = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+  <span class="hljs-comment">// 获取当前相对时间戳</span>
+  <span class="hljs-keyword">const</span> getNow =
+    <span class="hljs-keyword">typeof</span> process !== <span class="hljs-string">&#x27;undefined&#x27;</span>
+      ? <span class="hljs-function">() =&gt;</span> process.uptime() * <span class="hljs-number">1000</span>
+      : <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">new</span> Event(<span class="hljs-string">&#x27;&#x27;</span>).timeStamp;
+  <span class="hljs-keyword">let</span> id = <span class="hljs-number">0</span>;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 请求间隔调用</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;Function&#125;</span> </span>fn 回调函数</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> </span>interval 间隔时间</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@returns <span class="hljs-type">&#123;number&#125;</span> <span class="hljs-variable">id</span></span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-keyword">const</span> requestInterval = <span class="hljs-function">(<span class="hljs-params">fn, interval = <span class="hljs-number">0</span></span>) =&gt;</span> &#123;
+    id++;
+    cacheMap.set(id, &#123; <span class="hljs-attr">pause</span>: <span class="hljs-literal">false</span> &#125;);
+    <span class="hljs-comment">// 上一调度器执行时间戳</span>
+    <span class="hljs-keyword">let</span> previousTimeStamp = getNow();
+    <span class="hljs-comment">// 获取是否允许继续</span>
+    <span class="hljs-keyword">const</span> getAllowContinue = <span class="hljs-function">() =&gt;</span> !cacheMap.get(id).pause;
+
+    <span class="hljs-comment">// 调度器</span>
+    <span class="hljs-keyword">const</span> requestScheduler = <span class="hljs-function">(<span class="hljs-params">currentInterval = interval</span>) =&gt;</span> &#123;
+      <span class="hljs-keyword">if</span> (getAllowContinue()) &#123;
+        requestTimeout(<span class="hljs-function">() =&gt;</span> &#123;
+          <span class="hljs-keyword">const</span> currentTimeStamp = getNow(); <span class="hljs-comment">// 当前时间戳</span>
+          <span class="hljs-keyword">const</span> realInterval = currentTimeStamp - previousTimeStamp; <span class="hljs-comment">// 本次和上次的真实间隔</span>
+          <span class="hljs-keyword">const</span> delta = interval + (interval - realInterval); <span class="hljs-comment">// 间隔差值</span>
+          <span class="hljs-keyword">const</span> nextInterval = delta &gt; <span class="hljs-number">0</span> ? delta : <span class="hljs-number">0</span>; <span class="hljs-comment">// 下一次间隔时间</span>
+          <span class="hljs-keyword">const</span> skipTimes = <span class="hljs-built_in">Math</span>.floor((realInterval - interval) / interval); <span class="hljs-comment">// 被跳过的次数（被阻塞或者睡眠）</span>
+          previousTimeStamp = currentTimeStamp;
+          fn(skipTimes &gt; <span class="hljs-number">0</span> ? skipTimes : <span class="hljs-number">0</span>);
+          requestScheduler(nextInterval);
+        &#125;, currentInterval);
+      &#125;
+    &#125;;
+
+    requestScheduler();
+    <span class="hljs-keyword">return</span> id;
+  &#125;;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 取消间隔任务</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> </span>id 任务id</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@returns <span class="hljs-type">&#123;void&#125;</span></span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-keyword">const</span> cancelInterval = <span class="hljs-function"><span class="hljs-params">id</span> =&gt;</span> &#123;
+    <span class="hljs-keyword">if</span> (cacheMap.has(id)) &#123;
+      <span class="hljs-keyword">const</span> cache = cacheMap.get(id);
+      cache.pause = <span class="hljs-literal">true</span>;
+    &#125;
+  &#125;;
+
+  <span class="hljs-keyword">return</span> &#123;
+    requestInterval,
+    cancelInterval,
+  &#125;;
+&#125;)();</code></pre></div>
+
+<h3 id="测试结果对比"><a href="#测试结果对比" class="headerlink" title="测试结果对比"></a>测试结果对比</h3><p>测试代码为</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 60次requestTimeout递归测试</span>
+<span class="hljs-comment"> */</span>
+(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">let</span> n1 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> tick1 = <span class="hljs-function">() =&gt;</span> &#123;
+    requestTimeout(<span class="hljs-function">() =&gt;</span> &#123;
+      n1++;
+      <span class="hljs-keyword">if</span> (n1 &gt;= <span class="hljs-number">60</span>) &#123;
+        <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;60 times requestTimeout&#x27;</span>);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        tick1();
+      &#125;
+    &#125;, <span class="hljs-number">1000</span>);
+  &#125;;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;60 times requestTimeout&#x27;</span>);
+  tick1();
+&#125;)();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * setTimeout测试对照组</span>
+<span class="hljs-comment"> */</span>
+(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-keyword">let</span> n2 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> tick2 = <span class="hljs-function">() =&gt;</span> &#123;
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
+      n2++;
+      <span class="hljs-keyword">if</span> (n2 === <span class="hljs-number">60</span>) &#123;
+        <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;setTimeout&#x27;</span>);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        tick2();
+      &#125;
+    &#125;, <span class="hljs-number">1000</span>);
+  &#125;;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;setTimeout&#x27;</span>);
+  tick2();
+&#125;)();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * setInterval测试对照组</span>
+<span class="hljs-comment"> */</span>
+(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;setInterval&#x27;</span>);
+  <span class="hljs-keyword">let</span> n3 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> timer1 = <span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> &#123;
+    n3++;
+    <span class="hljs-keyword">if</span> (n3 === <span class="hljs-number">60</span>) &#123;
+      <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;setInterval&#x27;</span>);
+      <span class="hljs-built_in">clearInterval</span>(timer1);
+    &#125;
+  &#125;, <span class="hljs-number">1000</span>);
+&#125;)();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * requestInterval测试对照组1</span>
+<span class="hljs-comment"> */</span>
+(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;requestInterval1&#x27;</span>);
+  <span class="hljs-keyword">let</span> n4 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> timer2 = requestInterval(<span class="hljs-function">() =&gt;</span> &#123;
+    n4++;
+    <span class="hljs-keyword">if</span> (n4 === <span class="hljs-number">60</span>) &#123;
+      <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;requestInterval1&#x27;</span>);
+      cancelInterval(timer2);
+    &#125;
+  &#125;, <span class="hljs-number">1000</span>);
+&#125;)();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * requestInterval测试对照组2</span>
+<span class="hljs-comment"> */</span>
+(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;requestInterval2&#x27;</span>);
+  <span class="hljs-keyword">let</span> n5 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> timer3 = requestInterval(<span class="hljs-function">() =&gt;</span> &#123;
+    n5++;
+    <span class="hljs-keyword">if</span> (n5 === <span class="hljs-number">60</span>) &#123;
+      <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;requestInterval2&#x27;</span>);
+      cancelInterval(timer3);
+    &#125;
+  &#125;, <span class="hljs-number">1000</span>);
+&#125;)();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * requestInterval测试对照组3</span>
+<span class="hljs-comment"> */</span>
+(<span class="hljs-function">() =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;requestInterval3&#x27;</span>);
+  <span class="hljs-keyword">let</span> n6 = <span class="hljs-number">0</span>;
+  <span class="hljs-keyword">const</span> timer4 = requestInterval(<span class="hljs-function">() =&gt;</span> &#123;
+    n6++;
+    <span class="hljs-keyword">if</span> (n6 === <span class="hljs-number">60</span>) &#123;
+      <span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;requestInterval3&#x27;</span>);
+      cancelInterval(timer4);
+    &#125;
+  &#125;, <span class="hljs-number">1000</span>);
+&#125;)();</code></pre></div>
+
+<ul>
+<li><p>浏览器前台：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestInterval-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+<li><p>浏览器后台：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestInterval-background-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+<li><p>node：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/requestInterval-node-screenshot.png" srcset="/img/loading.gif" alt="测试结果"></p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>总的来说，在 node 中表现会更好更准确，但是在浏览器后台的情况下就一般般了。但是最后还是记得要<code>清除定时器</code>以免发生内存泄露。</p>
+<p>最后附上<a target="_blank" rel="noopener" href="https://github.com/ben-lau/blog/blob/master/assets/script/requestTimer.js">完整代码</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Javascript/">Javascript</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/301%E3%80%81302%E3%80%81303%E3%80%81307%E3%80%81308/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">301、302、303、307、308</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Vue2%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/">
+                        <span class="hidden-mobile">Vue2 响应式原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2"></div>
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <!-- <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div> -->
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            
+            <span id="busuanzi_value_site_pv"></span>
+             
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            
+            <span id="busuanzi_value_site_uv"></span>
+             
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "不准确的定时器&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "left",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/mermaid/8.5.0/mermaid.min.js" ></script>
+  <script>
+    if (window.mermaid) {
+      mermaid.initialize({"theme":"default"});
+    }
+  </script>
+
+
+
+
+
+
+
+</body>
+</html>

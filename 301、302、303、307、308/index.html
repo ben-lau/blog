@@ -1,0 +1,616 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/weather.png">
+  <link rel="icon" type="image/png" href="/images/weather.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Ben Lau">
+  <meta name="keywords" content="">
+  <title>301、302、303、307、308 - Ben Lau&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Ben Lau's space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/bg-cube.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-26 11:08" pubdate>
+        2020年11月26日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      44
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    
+      <div class="d-none d-lg-block col-lg-2 ml-3 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">301、302、303、307、308</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：7 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="301、302、303、307、308"><a href="#301、302、303、307、308" class="headerlink" title="301、302、303、307、308"></a>301、302、303、307、308</h1><h2 id="1、HTTP-状态码"><a href="#1、HTTP-状态码" class="headerlink" title="1、HTTP 状态码"></a>1、HTTP 状态码</h2><p>HTTP 状态码是由 RFC2616 规范定义的，用以表示服务器超文本传输协议响应状态的 3 位数字代码。状态码是协助开发者掌握请求是否运转正常的一个标志，常见的大概有 200，304，404，500 等。每个状态码都有其代表的意义，而且也发挥着不同的作用。</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-1.jpeg" srcset="/img/loading.gif" alt="有趣的状态码1"></p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-2.jpeg" srcset="/img/loading.gif" alt="有趣的状态码2"></p>
+<h2 id="2、HTTP-3xx"><a href="#2、HTTP-3xx" class="headerlink" title="2、HTTP 3xx"></a>2、HTTP 3xx</h2><p>HTTP 状态码 3xx 一类的都是重定向（Redirect），需要进一步的操作以完成请求。</p>
+<p><em>参考<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7231#section-6.4">RFC7231 第六节</a></em></p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>状态码名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>300</td>
+<td>Mutiple Choices</td>
+<td>表示目标资源具有多种选择，用户或浏览器能够自行选择一个首选的地址进行重定向。</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td>资源已被永久移动到新位置，服务器应生成一个 Location 字段，让用户代理可以使用此字段进行自动重定向。由于历史原因，用户代理可能会改变请求方法</td>
+</tr>
+<tr>
+<td>302</td>
+<td>Found</td>
+<td>表示目标资源暂时驻留在其他 URI 下，由于重定向可能随时被更改，所以客户端应该继续使用有效请求。服务器应生成一个 Location 字段，让用户代理可以使用此字段进行自动重定向。由于历史原因，用户代理可能会改变请求方法</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other</td>
+<td>表示服务器需要将用户代理重定向至另一个资源，客户端会将请求方法改为 GET。与 302 类似，因为历史原因增加的状态码。大部分 HTTP/1.1 版以前的浏览器不能理解 303 状态。</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>表示客户端发送了一个带条件的 GET 或 HEAD 请求并且被允许，而且内容还是有效（自上次访问后根据请求的条件），则服务器应当返回这个状态码，并且禁止包含消息体</td>
+</tr>
+<tr>
+<td>305</td>
+<td>Use Proxy</td>
+<td>表示被请求资源需要通过制定代理才能被访问，现已被弃用</td>
+</tr>
+<tr>
+<td>306</td>
+<td>Switch Proxy</td>
+<td>已被弃用，但是保留状态码</td>
+</tr>
+<tr>
+<td>307</td>
+<td>Temporary Redirect</td>
+<td>表示资源暂时被重定向到不同的位置，因为重定向随时会被改变，所以客户端应继续使用原始的有效请求。与 302 类似，只是不允许将请求方法从 POST 改为 GET</td>
+</tr>
+<tr>
+<td>308</td>
+<td>Permanent Redirect</td>
+<td>这个跟 301 差不多，只是不允许将请求方法从 POST 改为 GET（<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7238#section-3">RFC7238</a>）</td>
+</tr>
+</tbody></table>
+<h2 id="3、各大网站的重定向"><a href="#3、各大网站的重定向" class="headerlink" title="3、各大网站的重定向"></a>3、各大网站的重定向</h2><p>在日常浏览网页的时候，如果有心观察请求，有时候会发现一些页面返回的是 301 或者 302。</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-engadget.png" srcset="/img/loading.gif" alt="engadaget"></p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-google.png" srcset="/img/loading.gif" alt="google"></p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-jd.png" srcset="/img/loading.gif" alt="jd"></p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-xiaomi.png" srcset="/img/loading.gif" alt="xiaomi"></p>
+<p>还能看到一些 307 的：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-taobao.png" srcset="/img/loading.gif" alt="taobao"></p>
+<p>(讲道理淘宝前几天还是 302)</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/status-code-youtube.png" srcset="/img/loading.gif" alt="youtube"></p>
+<h2 id="4、实际应用场景"><a href="#4、实际应用场景" class="headerlink" title="4、实际应用场景"></a>4、实际应用场景</h2><p>上面了解到了部分 3xx 状态码的意义，但是还是不知道是用来做什么的。其实 301 和 302 看起来效果是一样的，对于浏览器来说都会去重新对 Location 字段请求。这个过程可以称之为重定向，表现为用户在地址栏输入的地址 A，瞬间变成了地址 B。</p>
+<h3 id="4-1、为什么需要重定向"><a href="#4-1、为什么需要重定向" class="headerlink" title="4-1、为什么需要重定向"></a>4-1、为什么需要重定向</h3><p>正常来说，浏览网站就浏览了，为什么需要重定向到另一个地址呢？一般来说分为以下几种情况：</p>
+<ul>
+<li>网站域名更改（例如 xiaomi.com 变成 mi.com）</li>
+<li>网站路径更改（例如页面路径更改，扩展名更改等）</li>
+<li>网站协议更改（例如 http 的页面需要跳到 https）</li>
+<li>多个域名，需要将流量和权重综合到主站上</li>
+</ul>
+<p>以上几种情况可以总结为，就是地址更改了，但是原地址都需要跳转到新地址上。如果没有重定向，用户的历史记录或者收藏夹或者搜索引擎的数据库中都只会得到一个 404 错误页面，让访问量白白流失，或者是某些注册了多个域名的网站，需要通过重定向让用户自动跳转到主站点。这时候就都需要用到重定向了。</p>
+<h3 id="4-2、关于-PR"><a href="#4-2、关于-PR" class="headerlink" title="4-2、关于 PR"></a>4-2、关于 PR</h3><p>对于普通浏览，其实 301 和 302 看起来是一样的，但是对于搜索引擎来说就完全不一样了，在此之前要科普一个名词叫<strong>PR</strong>。</p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/PageRank">PR</a>全称为 PageRank，级别是 0 到 10，是一个用以评测网页等级和重要性的一个指标。简单来说，PR 值越高，网页越受欢迎，或者说越重要，但是根据 Google 官方所说，PR 并不能对网站排名产生绝对作用。但是高 PR 值会被：</p>
+<ul>
+<li>收录更多的页面</li>
+<li>搜索引擎 spider 会访问更频繁，新内容更快被收录</li>
+<li>重复内容会更容易被判断为原创</li>
+<li>排名进入初始子集几率更大</li>
+</ul>
+<h3 id="4-3、301-和-302"><a href="#4-3、301-和-302" class="headerlink" title="4-3、301 和 302"></a>4-3、301 和 302</h3><p>301 含义是<strong>永久性重定向</strong>，302 是<strong>暂时性重定向</strong>，这样看起来好像用 302 就可以了，但是无论是 <a target="_blank" rel="noopener" href="https://developers.google.com/search/docs/advanced/crawling/301-redirects?visit_id=637419026366730396-2964136309&rd=1">Google</a> 还是<a target="_blank" rel="noopener" href="https://developer.baidu.com/resources/online/doc/seo/search-engine-optimization-guide.html#%E5%90%88%E7%90%86%E7%9A%84%E8%BF%94%E5%9B%9E%E7%A0%81">百度</a>都建议用 301。那到底是有什么区别呢？</p>
+<p>假如现在有两个页面分别是 A（xxx.com）和B（h5.xxxxx.com），而我们需要告诉搜索引擎B页面就是原来的A页面，这时候就需要重定向方式处理。</p>
+<ul>
+<li>返回 301：如果 A 页面原来就已经被搜索引擎收录了，那么当搜索引擎再次爬取到 A 页面时，因为获取到 301，这样就会知道以后再也没有 A 页面，搜索引擎会将原本 A 页面的排名权重（PR 值）转移到 B 页面上去，并且将数据库中 A 页面记录替换成 B 页面。</li>
+<li>返回 302：搜索引擎会觉得这次只是临时跳转，未来 A 页面随时可能改变跳转，重新显示原来内容或者跳转到其他地方，所以搜索引擎接收到 302 时，数据库并不会删除 A 页面，而是新建 B 页面的记录，A 页面的 PR 值也不会转移到 B 页面上去。</li>
+</ul>
+<p>为什么建议用 301，一方面是 PR 的浪费问题，另一方面是 URL 劫持的问题。</p>
+<p>实际上如果搜索引擎接收到 302 跳转时，永远都去抓取 Location 目标的话，就不会有这种问题了，正正是因为搜索引擎尤其是 Google，并不能总是有效抓取 Location，这是因为 Google 有自己的考虑在里面：当 B 页面的 URL 是个杂乱且冗长带各种参数的网址，而 A 页面却是简短且友好的话，Google 很有可能还是显示 A 网址。而这时候，一些人就会利用这一点，让自己的 C 页面返回 302 指向一个 内容质量较高的 D 页面，然后因为 Google 的这套机制，可能显示的搜索结果还是 C 但是内容却是 D 页面的内容了，这样子 D 页面的作者的辛苦写的东西都被窃取者偷走并作为自己的成果。这个就是 URL 劫持。</p>
+<p>虽然 Google 对 302 问题很重视，URL 劫持现象还是有点改善，但是没有完全解决。而如果长时间用 302 作为长期跳转，搜索引擎会判定这个行为是作弊行为，302 也很容易被搜索引擎误认为是利用多个域名指向同一站点，会对页面给予惩罚，甚至封掉，挂上“利用重复内容干扰 Google 搜索结果的网站排名”。所以在使用网站重定向时，非必要不建议用 302。</p>
+<h3 id="4-4、不使用跳转的后果"><a href="#4-4、不使用跳转的后果" class="headerlink" title="4-4、不使用跳转的后果"></a>4-4、不使用跳转的后果</h3><p>一方面是搜索引擎会发现有新页 B 面进行收录，但是由于没有跳转，所以认为是个全新的页面，与原来的 A 网站无关联，所以 A 的页面 PR 不会传到给 B，如果原来 A 的 PR 值很高，B 页面却需要重新计算，这里就会很吃亏</p>
+<p>另一方面则是如果搜索引擎访问 A 页面，由于没跳转发现的是 404 表示资源找不到，搜索引擎会认为网站没做好并且会给予惩罚，导致排名下降</p>
+<h2 id="5、-PR-劫持"><a href="#5、-PR-劫持" class="headerlink" title="5、 PR 劫持"></a>5、 PR 劫持</h2><p>大概原理其实是利用了 301 或 302 跳转，把自己的网站 A 重定向至高 PR 值网站 B，因为 B 网站的 PR 值较高，在 A 网站 PR 值更新后，也会显示成 B 网站的 PR 值。利用这点，A 网站得到了本不属于自己的高 PR，并且在更新了 PR 后，立刻取消重定向，放上自己的内容。这样做，就会让浏览者误以为这个网站是个高 PR 值的网站。而本次 PR 劫持至少能持续到下一次 PR 值更新，大概会有 2~3 个月。</p>
+<p>更隐晦一点的做法是，通过请求检测到本次为搜索引擎的 spider 时，返回 301 指向高 PR 值网站，却对普通浏览者返回原本页面，这样子做，甚至可以不影响自己的内容的前提下劫持了高 PR 值的网站。</p>
+<h2 id="6、那-303、307、308-是怎么回事"><a href="#6、那-303、307、308-是怎么回事" class="headerlink" title="6、那 303、307、308 是怎么回事"></a>6、那 303、307、308 是怎么回事</h2><p>通过上面的介绍可以知道，重定向的意义和对 seo 的影响，然后会发现 303、307、308 似乎跟 301 和 302 也差不多，但是又有所不同，然后网页的重定向返回码也各有不同，其实可以做个归类：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>永久性重定向</th>
+<th>暂时性重定向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>允许更改请求方法</td>
+<td>301</td>
+<td>302、303</td>
+</tr>
+<tr>
+<td>不允许更改请求方法</td>
+<td>308</td>
+<td>307</td>
+</tr>
+</tbody></table>
+<h3 id="6-1、302-和-303-和-307"><a href="#6-1、302-和-303-和-307" class="headerlink" title="6-1、302 和 303 和 307"></a>6-1、302 和 303 和 307</h3><p>其实 303 可以理解为 302 的规范化版本，307 则是原本的 302 规范。在最初的 302 定义中，内容与现在的 307 意义，不允许重定向方法改写，但是早期的浏览器实现的时候，有些实现成现在的 303（允许更改请求方法），有些实现成现在的 307（不允许更改请求方法），于是乎之后的标准，就将 302 某些错误的实现写入规范成为了 303，而 302 原本的规范复制到了 307。在最近的一次修订中，302 标准不再强制需要维持原来请求方法，所以产生了现在的 302、303 和 307。</p>
+<p>可<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7231#section-6.4.3">参阅 RFC7231</a>:（中间这个<strong>MAY</strong>很关键，在 307 规范中为 <strong>MUST NOT</strong>）<br><code>Note: For historical reasons, a user agent MAY change the request method from POST to GET for the subsequent request. If this behavior is undesired, the 307 (Temporary Redirect) status code can be used instead.</code></p>
+<h3 id="6-2、301-和-308"><a href="#6-2、301-和-308" class="headerlink" title="6-2、301 和 308"></a>6-2、301 和 308</h3><p>和 302 一样，301 在浏览器实现和标准有不一致问题，一直延续到了 2014 年的 RFC7231，所以后面标准补充了 308.</p>
+<p>可<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7231#section-6.4.2">参阅 RFC7231</a>：（也是<strong>MAY</strong>，表明协议也妥协了实现）<br><code> Note: For historical reasons, a user agent MAY change the request method from POST to GET for the subsequent request. If this behavior is undesired, the 307 (Temporary Redirect) status code can be used instead.</code></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/HTTP/">HTTP</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">执行上下文和作用域</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E4%B8%8D%E5%87%86%E7%A1%AE%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8/">
+                        <span class="hidden-mobile">不准确的定时器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2"></div>
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <!-- <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div> -->
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            
+            <span id="busuanzi_value_site_pv"></span>
+             
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            
+            <span id="busuanzi_value_site_uv"></span>
+             
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "301、302、303、307、308&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "left",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

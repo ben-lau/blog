@@ -1,0 +1,1332 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/weather.png">
+  <link rel="icon" type="image/png" href="/images/weather.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Ben Lau">
+  <meta name="keywords" content="">
+  <title>Vue2 响应式原理 - Ben Lau&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Ben Lau's space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/bg-forest.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-11 16:44" pubdate>
+        2020年9月11日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      131
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    
+      <div class="d-none d-lg-block col-lg-2 ml-3 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Vue2 响应式原理</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：9 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Vue2-响应式原理"><a href="#Vue2-响应式原理" class="headerlink" title="Vue2 响应式原理"></a>Vue2 响应式原理</h1><p>当前笔记为<code>2.6.11</code>版本的 Vue</p>
+<p>很多人对 Vue 的响应式原理大概能说得出，但是完整深入的流程可能不太清晰，其实中间还是有很多有趣的部分，下面将会从初始化开始讲起整个响应式系统的原理。部分代码片段中会有些个人理解所加的注解，注意留意一下。</p>
+<h2 id="1-开始"><a href="#1-开始" class="headerlink" title="1. 开始"></a>1. 开始</h2><p>先从<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/instance/index.js">vue/src/core/instance/index.js</a>进入，这里是 Vue 的构造函数，下面调用了<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/instance/init.js">initMixin</a>，让我们进入去看看。</p>
+<h3 id="initState"><a href="#initState" class="headerlink" title="initState"></a>initState</h3><p>这里会给 Vue 的 prototype 注入<code>\_init</code>方法，并且在实例化（<code>new Vue</code>）或创建组件（<code>Vue.extend</code>）时调用它。在这里，可以看到 Vue 在<code>beforeCreate</code>和<code>created</code> 的时机究竟做了什么，这里先只讨论响应式原理，所以我们看到<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/instance/init.js#L57">initState</a>方法被调用，然后进入<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/instance/state.js#L48">state.js</a></p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">// 初始化state，这里初始化了props、methods、data、computed、watch</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initState</span>(<span class="hljs-params">vm: Component</span>) </span>&#123;
+  vm._watchers = [];
+  <span class="hljs-keyword">const</span> opts = vm.$options;
+  <span class="hljs-keyword">if</span> (opts.props) initProps(vm, opts.props); <span class="hljs-comment">// 初始化props</span>
+  <span class="hljs-keyword">if</span> (opts.methods) initMethods(vm, opts.methods); <span class="hljs-comment">// 初始化methods</span>
+  <span class="hljs-keyword">if</span> (opts.data) &#123;
+    initData(vm); <span class="hljs-comment">// 初始化data</span>
+  &#125; <span class="hljs-keyword">else</span> &#123;
+    observe((vm._data = &#123;&#125;), <span class="hljs-literal">true</span> <span class="hljs-comment">/* asRootData */</span>); <span class="hljs-comment">// 如果没data则给_data赋空对象并映射给data</span>
+  &#125;
+  <span class="hljs-keyword">if</span> (opts.computed) initComputed(vm, opts.computed); <span class="hljs-comment">// 初始化computed</span>
+  <span class="hljs-comment">// nativeWatch判断是因为firefox里Object.prototype中有watch属性</span>
+  <span class="hljs-keyword">if</span> (opts.watch &amp;&amp; opts.watch !== nativeWatch) &#123;
+    initWatch(vm, opts.watch); <span class="hljs-comment">// 初始化watch</span>
+  &#125;
+&#125;</code></pre></div>
+
+<h3 id="initData"><a href="#initData" class="headerlink" title="initData"></a>initData</h3><p>下面就是如何去初始化 data 的 initData 函数</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">// 初始化data，这里要判断获取一次data和判断data是否与props和methods同名，然后要将data挂载到_data，并代理this.访问，然后观察属性</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initData</span> (<span class="hljs-params">vm: Component</span>) </span>&#123;
+  <span class="hljs-keyword">let</span> data = vm.$options.data
+  data = vm._data = <span class="hljs-keyword">typeof</span> data === ‘<span class="hljs-function"><span class="hljs-keyword">function</span>’ // 将配置中的<span class="hljs-title">data</span>挂载到<span class="hljs-title">this</span>.<span class="hljs-title">_data</span></span>
+<span class="hljs-function">    ? <span class="hljs-title">getData</span>(<span class="hljs-params">data, vm</span>) // 如果<span class="hljs-title">data</span>是个函数</span>
+<span class="hljs-function">    : <span class="hljs-title">data</span> || </span>&#123;&#125;
+  <span class="hljs-keyword">if</span> (!isPlainObject(data)) &#123; <span class="hljs-comment">// 如果得出的data不是个对象就警告</span>
+    data = &#123;&#125;
+    process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp; warn(
+      <span class="hljs-string">&#x27;data functions should return an object:\n&#x27;</span> +
+      <span class="hljs-string">&#x27;https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function&#x27;</span>,
+      vm
+    )
+  &#125;
+  <span class="hljs-comment">// proxy data on instance</span>
+  <span class="hljs-keyword">const</span> keys = <span class="hljs-built_in">Object</span>.keys(data)
+  <span class="hljs-keyword">const</span> props = vm.$options.props
+  <span class="hljs-keyword">const</span> methods = vm.$options.methods
+  <span class="hljs-keyword">let</span> i = keys.length
+  <span class="hljs-keyword">while</span> (i--) &#123;
+    <span class="hljs-keyword">const</span> key = keys[i]
+    <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span>) &#123;
+      <span class="hljs-keyword">if</span> (methods &amp;&amp; hasOwn(methods, key)) &#123;
+        warn(
+          <span class="hljs-string">`Method &quot;<span class="hljs-subst">$&#123;key&#125;</span>&quot; has already been defined as a data property.`</span>,
+          vm
+        )
+      &#125;
+    &#125;
+    <span class="hljs-keyword">if</span> (props &amp;&amp; hasOwn(props, key)) &#123;
+      process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp; warn(
+        <span class="hljs-string">`The data property &quot;<span class="hljs-subst">$&#123;key&#125;</span>&quot; is already declared as a prop. `</span> +
+        <span class="hljs-string">`Use prop default value instead.`</span>,
+        vm
+      )
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!isReserved(key)) &#123;
+      proxy(vm, <span class="hljs-string">`_data`</span>, key)  <span class="hljs-comment">// 代理this.属性访问指向this._data.属性内</span>
+    &#125;
+  &#125;
+  <span class="hljs-comment">// observe data</span>
+  observe(data, <span class="hljs-literal">true</span> <span class="hljs-comment">/* asRootData */</span>)  <span class="hljs-comment">// 开始观察对象</span>
+&#125;
+
+<span class="hljs-comment">// 这方法是用来代理某个对象的属性访问指向到另一个对象上的</span>
+<span class="hljs-comment">// 这里也是你能从this上直接获取到data内的属性的原理，其实是this.属性利用getter指向了this._data.属性上了，setter同理</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">proxy</span> (<span class="hljs-params">target: Object, sourceKey: string, key: string</span>) </span>&#123;
+  sharedPropertyDefinition.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">proxyGetter</span> (<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>[sourceKey][key]
+  &#125;
+  sharedPropertyDefinition.set = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">proxySetter</span> (<span class="hljs-params">val</span>) </span>&#123;
+    <span class="hljs-built_in">this</span>[sourceKey][key] = val
+  &#125;
+  <span class="hljs-built_in">Object</span>.defineProperty(target, key, sharedPropertyDefinition)
+&#125;
+
+<span class="hljs-comment">// 获取方法型data时将null推入dep栈，不去触发data的getter依赖收集，后面会说为什么要用dep栈管理dep</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getData</span> (<span class="hljs-params">data: Function, vm: Component</span>): <span class="hljs-title">any</span> </span>&#123;
+  <span class="hljs-comment">// #7573 disable dep collection when invoking data getters</span>
+  pushTarget() <span class="hljs-comment">// 空入栈</span>
+  <span class="hljs-keyword">try</span> &#123;
+    <span class="hljs-keyword">return</span> data.call(vm, vm) <span class="hljs-comment">// 获取方法型data</span>
+  &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+    handleError(e, vm, <span class="hljs-string">`data()`</span>)
+    <span class="hljs-keyword">return</span> &#123;&#125;
+  &#125; <span class="hljs-keyword">finally</span> &#123;
+    popTarget() <span class="hljs-comment">// 出栈</span>
+  &#125;
+&#125;</code></pre></div>
+
+<p>这里从上往下做了几件事</p>
+<ol>
+<li>首先将配置中的 data 交给实例上的_data，如果是函数则执行，执行途中会将空推入 dep 栈中（后面会解释为什么要用栈），目的是防止 data 有已被观察的对象并触发了依赖收集，毕竟这里只是去一次 data 值。</li>
+<li>判断如果配置 data 为非对象，或者对象内属性名与 props 和 methods 的字段名有冲突则报警告。</li>
+<li>将_data 上的属性代理到实例对象内，即平时用的<code>this.属性</code>其实访问的是<code>this._data.属性</code>。</li>
+<li>开始观察 data，并且加个 root 标志，意思是这被观察的对象为顶级 data 下的，毕竟后面 observe 还会递归使用。</li>
+</ol>
+<h2 id="2-观察者（Observer）"><a href="#2-观察者（Observer）" class="headerlink" title="2. 观察者（Observer）"></a>2. 观察者（Observer）</h2><h3 id="obseve"><a href="#obseve" class="headerlink" title="obseve"></a>obseve</h3><p>开始观察属性调用了 observe 方法，我们进入到<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/observer/index.js">vue/src/core/observer/index.js</a>内</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Attempt to create an observer instance for a value,</span>
+<span class="hljs-comment"> * returns the new observer if successfully observed,</span>
+<span class="hljs-comment"> * or the existing observer if the value already has one.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-comment">// asRootData是根对象标识，调用observe的要么是跟对象要么是根对象下面的属性递归时</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">observe</span>(<span class="hljs-params">value: any, asRootData: ?boolean</span>): <span class="hljs-title">Observer</span> | <span class="hljs-title">void</span> </span>&#123;
+  <span class="hljs-keyword">if</span> (!isObject(value) || value <span class="hljs-keyword">instanceof</span> VNode) &#123;
+    <span class="hljs-keyword">return</span>;
+  &#125;
+  <span class="hljs-keyword">let</span> ob: Observer | <span class="hljs-keyword">void</span>;
+  <span class="hljs-keyword">if</span> (hasOwn(value, <span class="hljs-string">&#x27;__ob__&#x27;</span>) &amp;&amp; value.__ob__ <span class="hljs-keyword">instanceof</span> Observer) &#123;
+    <span class="hljs-comment">// 如果对象上有__ob__则使用__ob__属性</span>
+    ob = value.__ob__;
+  &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (
+    shouldObserve &amp;&amp;
+    !isServerRendering() &amp;&amp;
+    (<span class="hljs-built_in">Array</span>.isArray(value) || isPlainObject(value)) &amp;&amp;
+    <span class="hljs-built_in">Object</span>.isExtensible(value) &amp;&amp;
+    !value._isVue
+  ) &#123;
+    ob = <span class="hljs-keyword">new</span> Observer(value);
+  &#125;
+  <span class="hljs-keyword">if</span> (asRootData &amp;&amp; ob) &#123;
+    <span class="hljs-comment">// 如果是根部对象，即非对象内属性，则计数一下依赖到这个对象的组件实例</span>
+    ob.vmCount++;
+  &#125;
+  <span class="hljs-keyword">return</span> ob;
+&#125;</code></pre></div>
+
+<p>可以看到 observe 方法其实主要做的就是实例化 Observer 类，而 Observer 就是 Vue 响应式的核心之一了，我这里称之为<code>观察者</code>,因为是用来观察数据变化的。</p>
+<h3 id="Observer"><a href="#Observer" class="headerlink" title="Observer"></a>Observer</h3><div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Observer class that is attached to each observed</span>
+<span class="hljs-comment"> * object. Once attached, the observer converts the target</span>
+<span class="hljs-comment"> * object&#x27;s property keys into getter/setters that</span>
+<span class="hljs-comment"> * collect dependencies and dispatch updates.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Observer</span> </span>&#123;
+  value: any;
+  dep: Dep;
+  vmCount: number; <span class="hljs-comment">// number of vms that have this object as root $data</span>
+
+  <span class="hljs-keyword">constructor</span>(value: any) &#123;
+    <span class="hljs-built_in">this</span>.value = value;
+    <span class="hljs-built_in">this</span>.dep = <span class="hljs-keyword">new</span> Dep(); <span class="hljs-comment">// 在实例上挂载订阅器，这个订阅器是对象本身的订阅器，用于收集对象更改、移除、数组变化</span>
+    <span class="hljs-built_in">this</span>.vmCount = <span class="hljs-number">0</span>;
+    def(value, <span class="hljs-string">&#x27;__ob__&#x27;</span>, <span class="hljs-built_in">this</span>); <span class="hljs-comment">// 在对象上将自己挂载于__ob__下</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(value)) &#123;
+      <span class="hljs-keyword">if</span> (hasProto) &#123;
+        <span class="hljs-comment">// 这里将会劫持array原型链上的方法，使其可以响应式</span>
+        protoAugment(value, arrayMethods);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        copyAugment(value, arrayMethods, arrayKeys);
+      &#125;
+      <span class="hljs-comment">/**</span>
+<span class="hljs-comment">       * 遍历数组，但是并没有劫持数组下标，仅仅只是对数组内所有值都走一次observe方法，这里其实完全可以劫持,</span>
+<span class="hljs-comment">       * 没这么做是因为这样子得不偿失，数组长度可能整天变动，性能会比较低下，所以选择劫持数组更改的方法（splice）等</span>
+<span class="hljs-comment">       */</span>
+      <span class="hljs-built_in">this</span>.observeArray(value);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-built_in">this</span>.walk(value); <span class="hljs-comment">// 遍历并劫持对象中的所有属性</span>
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Walk through all properties and convert them into</span>
+<span class="hljs-comment">   * getter/setters. This method should only be called when</span>
+<span class="hljs-comment">   * value type is Object.</span>
+<span class="hljs-comment">   */</span>
+  walk(obj: <span class="hljs-built_in">Object</span>) &#123;
+    <span class="hljs-keyword">const</span> keys = <span class="hljs-built_in">Object</span>.keys(obj);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; keys.length; i++) &#123;
+      defineReactive(obj, keys[I]); <span class="hljs-comment">// 劫持对象中所有属性值</span>
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Observe a list of Array items.</span>
+<span class="hljs-comment">   */</span>
+  observeArray(items: <span class="hljs-built_in">Array</span>&lt;any&gt;) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>, l = items.length; i &lt; l; i++) &#123;
+      observe(items[I]); <span class="hljs-comment">// 数组里循环观察每个值</span>
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<h3 id="defineReactive"><a href="#defineReactive" class="headerlink" title="defineReactive"></a>defineReactive</h3><p>defineReactive 就是如何劫持对象中属性的核心</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Define a reactive property on an Object.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">defineReactive</span>(<span class="hljs-params"></span></span>
+<span class="hljs-function"><span class="hljs-params">  obj: Object,</span></span>
+<span class="hljs-function"><span class="hljs-params">  key: string,</span></span>
+<span class="hljs-function"><span class="hljs-params">  val: any, <span class="hljs-regexp">//</span> 这个其实也是属性值的闭包</span></span>
+<span class="hljs-function"><span class="hljs-params">  customSetter?: ?Function,</span></span>
+<span class="hljs-function"><span class="hljs-params">  shallow?: boolean</span></span>
+<span class="hljs-function"><span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">const</span> dep = <span class="hljs-keyword">new</span> Dep(); <span class="hljs-comment">// 属性订阅器，闭包内的，所以需要dep栈调取</span>
+
+  <span class="hljs-keyword">const</span> property = <span class="hljs-built_in">Object</span>.getOwnPropertyDescriptor(obj, key); <span class="hljs-comment">// 获取对象属性本身描述符</span>
+  <span class="hljs-keyword">if</span> (property &amp;&amp; property.configurable === <span class="hljs-literal">false</span>) &#123;
+    <span class="hljs-keyword">return</span>;
+  &#125;
+
+  <span class="hljs-comment">// cater for pre-defined getter/setters</span>
+  <span class="hljs-keyword">const</span> getter = property &amp;&amp; property.get;
+  <span class="hljs-keyword">const</span> setter = property &amp;&amp; property.set;
+  <span class="hljs-keyword">if</span> ((!getter || setter) &amp;&amp; <span class="hljs-built_in">arguments</span>.length === <span class="hljs-number">2</span>) &#123;
+    val = obj[key];
+  &#125;
+
+  <span class="hljs-keyword">let</span> childOb = !shallow &amp;&amp; observe(val); <span class="hljs-comment">// 获取值的观察者</span>
+  <span class="hljs-built_in">Object</span>.defineProperty(obj, key, &#123;
+    enumerable: <span class="hljs-literal">true</span>,
+    configurable: <span class="hljs-literal">true</span>,
+    get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reactiveGetter</span>(<span class="hljs-params"></span>) </span>&#123;
+      <span class="hljs-comment">// 这里就是最核心的getter，在获取属性值的时机收集依赖</span>
+      <span class="hljs-keyword">const</span> value = getter ? getter.call(obj) : val;
+      <span class="hljs-keyword">if</span> (Dep.target) &#123;
+        dep.depend(); <span class="hljs-comment">// 依赖收集（将当前的watcher加入dep依赖中）</span>
+        <span class="hljs-keyword">if</span> (childOb) &#123;
+          childOb.dep.depend(); <span class="hljs-comment">// 如果有子订阅器也收集本次watcher</span>
+          <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Array</span>.isArray(value)) &#123;
+            dependArray(value);
+          &#125;
+        &#125;
+      &#125;
+      <span class="hljs-keyword">return</span> value;
+    &#125;,
+    set: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reactiveSetter</span>(<span class="hljs-params">newVal</span>) </span>&#123;
+      <span class="hljs-comment">// 这里就是最核心的setter，在设置属性值的时机通知依赖更新</span>
+      <span class="hljs-keyword">const</span> value = getter ? getter.call(obj) : val;
+      <span class="hljs-comment">/* eslint-disable no-self-compare */</span>
+      <span class="hljs-keyword">if</span> (newVal === value || (newVal !== newVal &amp;&amp; value !== value)) &#123;
+        <span class="hljs-comment">// 这里是个有趣的点，自我对比主要是NaN不等于自己</span>
+        <span class="hljs-keyword">return</span>;
+      &#125;
+      <span class="hljs-comment">/* eslint-enable no-self-compare */</span>
+      <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp; customSetter) &#123;
+        customSetter();
+      &#125;
+      <span class="hljs-comment">// #7981: for accessor properties without setter</span>
+      <span class="hljs-keyword">if</span> (getter &amp;&amp; !setter) <span class="hljs-keyword">return</span>;
+      <span class="hljs-keyword">if</span> (setter) &#123;
+        setter.call(obj, newVal);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        val = newVal;
+      &#125;
+      childOb = !shallow &amp;&amp; observe(newVal); <span class="hljs-comment">// 获取新的赋值的观察者</span>
+      dep.notify(); <span class="hljs-comment">// 订阅器通知更新</span>
+    &#125;,
+  &#125;);
+&#125;</code></pre></div>
+
+<p>看到这里或许会有几个疑惑点：</p>
+<ul>
+<li>Observer 类中初始化了一个<code>订阅器</code>，而 defineReactive 中也产生了个在闭包中的<code>订阅器</code>。其实<code>观察者</code>中的<code>订阅器</code>是对这个对象本身的赋值，数组变化的订阅；而闭包内的<code>订阅器</code>则是订阅对象内的属性的。</li>
+<li>(newVal !== newVal &amp;&amp; value !== value)，这一句是为了判断 NaN，因为 NaN 不等于自身。</li>
+</ul>
+<p>到这里，就已经做好了对数据的劫持了，即获取操作会让订阅器知道并收集依赖，设置操作会通知订阅器更新。</p>
+<h2 id="3-订阅器（Dep）"><a href="#3-订阅器（Dep）" class="headerlink" title="3. 订阅器（Dep）"></a>3. 订阅器（Dep）</h2><p>Dep 我这里称之为<code>订阅器</code>，它的作用是做了<code>观察者</code>和<code>订阅者</code>直接通信的桥梁，在<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/observer/dep.js">vue/src/core/observer/dep.js</a>内。</p>
+<p><code>订阅器</code>内维护着一个对当前订阅了的<code>订阅者</code>列表，而该<code>订阅器</code>又被<code>观察者</code>持有着。所以：</p>
+<ul>
+<li><p>当<code>观察者</code>被获取值的时候，当前 Dep.target 可能会挂载着一个<code>订阅者</code>，此时<code>订阅器</code>会将该<code>订阅者</code>收集起来，意义就是可以认为：当前<code>订阅者</code>执行更新行为（渲染或者获取值）的时候，触发了<code>观察者</code>获取值操作，所以该<code>订阅者</code>依赖这个<code>观察者</code>的更新。</p>
+</li>
+<li><p>当<code>观察者</code>被赋值时，<code>观察者</code>触发更新时会通知<code>订阅器</code>，<code>订阅器</code>会让所有挂载在自己身上的<code>订阅者</code>更新；而<code>订阅者</code>更新将会触发<code>观察者</code>取值，如此循环。</p>
+</li>
+</ul>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> type Watcher <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./watcher&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; remove &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../util/index&#x27;</span>;
+<span class="hljs-keyword">import</span> config <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../config&#x27;</span>;
+
+<span class="hljs-keyword">let</span> uid = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * A dep is an observable that can have multiple</span>
+<span class="hljs-comment"> * directives subscribing to it.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dep</span> </span>&#123;
+  <span class="hljs-keyword">static</span> target: ?Watcher; <span class="hljs-comment">// 当前的订阅者</span>
+  id: number;
+  subs: <span class="hljs-built_in">Array</span>&lt;Watcher&gt;; <span class="hljs-comment">// 订阅了这个订阅器的所有订阅者集合</span>
+
+  <span class="hljs-keyword">constructor</span>() &#123;
+    <span class="hljs-built_in">this</span>.id = uid++;
+    <span class="hljs-built_in">this</span>.subs = [];
+  &#125;
+
+  <span class="hljs-comment">// 添加订阅者</span>
+  addSub(sub: Watcher) &#123;
+    <span class="hljs-built_in">this</span>.subs.push(sub);
+  &#125;
+
+  <span class="hljs-comment">// 移除订阅者</span>
+  removeSub(sub: Watcher) &#123;
+    remove(<span class="hljs-built_in">this</span>.subs, sub);
+  &#125;
+
+  <span class="hljs-comment">// 依赖收集，将当前的订阅器递收集当前的订阅者</span>
+  depend() &#123;
+    <span class="hljs-keyword">if</span> (Dep.target) &#123;
+      Dep.target.addDep(<span class="hljs-built_in">this</span>);
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">// 通知所有订阅器内订阅者们更新</span>
+  notify() &#123;
+    <span class="hljs-comment">// stabilize the subscriber list first</span>
+    <span class="hljs-keyword">const</span> subs = <span class="hljs-built_in">this</span>.subs.slice();
+    <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp; !config.async) &#123;
+      <span class="hljs-comment">// subs aren&#x27;t sorted in scheduler if not running async</span>
+      <span class="hljs-comment">// we need to sort them now to make sure they fire in correct</span>
+      <span class="hljs-comment">// order</span>
+      subs.sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.id - b.id);
+    &#125;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>, l = subs.length; i &lt; l; i++) &#123;
+      subs[i].update();
+    &#125;
+  &#125;
+&#125;
+
+<span class="hljs-comment">// The current target watcher being evaluated.</span>
+<span class="hljs-comment">// This is globally unique because only one watcher</span>
+<span class="hljs-comment">// can be evaluated at a time.</span>
+Dep.target = <span class="hljs-literal">null</span>; <span class="hljs-comment">// 因为js单线程、同步机制，同时只会有一个watcher在被处理</span>
+<span class="hljs-keyword">const</span> targetStack = []; <span class="hljs-comment">// Dep.target的栈</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pushTarget</span>(<span class="hljs-params">target: ?Watcher</span>) </span>&#123;
+  <span class="hljs-comment">// 入栈</span>
+  targetStack.push(target);
+  Dep.target = target;
+&#125;
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">popTarget</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-comment">// 出栈</span>
+  targetStack.pop();
+  Dep.target = targetStack[targetStack.length - <span class="hljs-number">1</span>];
+&#125;</code></pre></div>
+
+<h3 id="Dep-target"><a href="#Dep-target" class="headerlink" title="Dep.target"></a>Dep.target</h3><p>这个是 Dep 类上的静态属性，就是说全局只有一个，也是当前被处理的<code>订阅者</code>Watcher 被挂载的地方。但是这里就有问题了，其实因为 js 单线程的原因，同时只有一个 Watcher 被处理，为什么需要有个 targetStack 即模拟出一个栈去管理呢？</p>
+<h4 id="为什么需要用栈来管理-Dep-target"><a href="#为什么需要用栈来管理-Dep-target" class="headerlink" title="为什么需要用栈来管理 Dep.target"></a>为什么需要用栈来管理 Dep.target</h4><p>在 Vue1 中仅仅是依靠 Dep.target 里进行依赖收集和当前处理中的订阅器，因为 Vue1 视图更新采用的是细粒度绑定的方式，即可以理解为</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- root --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+  &#123;&#123; a &#125;&#125;
+  <span class="hljs-tag">&lt;<span class="hljs-name">my</span> <span class="hljs-attr">:text</span>=<span class="hljs-string">&quot;b&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">my</span>&gt;</span>
+  &#123;&#123; c &#125;&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- component my --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>&#123;&#123; b &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></code></pre></div>
+
+<p>会被解析成：</p>
+<div class="hljs"><pre><code class="hljs javascript">watch(<span class="hljs-keyword">for</span> a) -&gt; directive(update &#123;&#123; a &#125;&#125;)
+watch(<span class="hljs-keyword">for</span> b) -&gt; directive(update &#123;&#123; b &#125;&#125;)
+watch(<span class="hljs-keyword">for</span> c) -&gt; directive(update &#123;&#123; c &#125;&#125;)</code></pre></div>
+
+<p>由于渲染是细粒度绑定，所以在处理完一个数据视图绑定后才回处理新的。</p>
+<p>而在 Vue2 中，视图会被抽象成 render 函数，一个 render 函数只会生成一个 watcher，其机理会可以理解为：</p>
+<div class="hljs"><pre><code class="hljs javascript">renderRoot () &#123;
+    ...
+    renderMy ()
+    ...
+&#125;</code></pre></div>
+
+<p>这里就包含了嵌套调用，只要有嵌套调用就会有调用栈，当调用 root 时当前 root watcher 入栈，执行到 my 渲染时，此时要中断 root 的 evaluate，而在 my 的 evaluate 结束后 root 将会继续执行，这就是 target 栈的意义</p>
+<h2 id="4-订阅者（Watcher）"><a href="#4-订阅者（Watcher）" class="headerlink" title="4.订阅者（Watcher）"></a>4.订阅者（Watcher）</h2><p>Watcher 是数据变化后的行为的执行人，所以这里我称之为<code>订阅者</code>，在<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/observer/watcher.js">vue/src/core/observer/watcher.js</a>内。</p>
+<p>在了解<code>订阅者</code>之前，需要知道 Vue 中 Watcher 有三种，分别是：</p>
+<ul>
+<li>**<u>自定义 Watcher</u>**：用户自己创建的 watch 或$watch</li>
+<li>**<u>计算 Watcher</u>**：声明计算属性时自动创建的 Watcher</li>
+<li>**<u>渲染 Watcher</u>**：每个组件创建时都有个 Watcher</li>
+</ul>
+<p>而内部执行顺序是 <strong><u>计算 Watcher</u></strong> &rarr; <strong><u>自定义 Watcher</u></strong> &rarr; <strong><u>渲染 Watcher</u></strong></p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123;
+  warn,
+  remove,
+  isObject,
+  parsePath,
+  _Set <span class="hljs-keyword">as</span> <span class="hljs-built_in">Set</span>,
+  handleError,
+  noop,
+&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../util/index&#x27;</span>;
+
+<span class="hljs-keyword">import</span> &#123; traverse &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./traverse&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; queueWatcher &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./scheduler&#x27;</span>;
+<span class="hljs-keyword">import</span> Dep, &#123; pushTarget, popTarget &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./dep&#x27;</span>;
+
+<span class="hljs-keyword">import</span> type &#123; SimpleSet &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../util/index&#x27;</span>;
+
+<span class="hljs-keyword">let</span> uid = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * A watcher parses an expression, collects dependencies,</span>
+<span class="hljs-comment"> * and fires callback when the expression value changes.</span>
+<span class="hljs-comment"> * This is used for both the $watch() api and directives.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Watcher</span> </span>&#123;
+  vm: Component; <span class="hljs-comment">// 组件实例</span>
+  expression: string; <span class="hljs-comment">// 取值函数或者函数名，用于错误提示的</span>
+  cb: <span class="hljs-built_in">Function</span>; <span class="hljs-comment">// 更新后的回调函数（一般在自定义watcher才存在，其实就是watch的handler属性）</span>
+  id: number;
+  deep: boolean;
+  user: boolean; <span class="hljs-comment">// 用于错误处理，只有自定义watcher为true</span>
+  lazy: boolean; <span class="hljs-comment">// 惰性取值，在计算wathcer中为true</span>
+  sync: boolean;
+  dirty: boolean; <span class="hljs-comment">// 标记是否已被惰性求值，如果是就返回不调用get</span>
+  active: boolean;
+  deps: <span class="hljs-built_in">Array</span>&lt;Dep&gt;; <span class="hljs-comment">// 当前依赖器表</span>
+  newDeps: <span class="hljs-built_in">Array</span>&lt;Dep&gt;; <span class="hljs-comment">// 即将到来的依赖器表</span>
+  depIds: SimpleSet; <span class="hljs-comment">// 当前依赖器id表</span>
+  newDepIds: SimpleSet; <span class="hljs-comment">// 即将到来的依赖器id表</span>
+  before: ?<span class="hljs-built_in">Function</span>; <span class="hljs-comment">// 用于队列取值前触发，只在渲染watcher中执行beforeUpdate事件发布</span>
+  getter: <span class="hljs-built_in">Function</span>; <span class="hljs-comment">// 取值函数，用于触发getter形成依赖收集闭环，自定义watcher里会变成属性取值函数或者$watch中的取值方法，计算watcher里为computed的getter，渲染watcher里为render函数，包含vnode创建和打补丁等</span>
+  value: any; <span class="hljs-comment">// 值</span>
+
+  <span class="hljs-keyword">constructor</span>(
+    vm: Component,
+    expOrFn: string | Function,
+    cb: Function,
+    options?: ?Object,
+    isRenderWatcher?: boolean
+  ) &#123;
+    <span class="hljs-built_in">this</span>.vm = vm;
+    <span class="hljs-keyword">if</span> (isRenderWatcher) &#123;
+      vm._watcher = <span class="hljs-built_in">this</span>;
+    &#125;
+    vm._watchers.push(<span class="hljs-built_in">this</span>);
+    <span class="hljs-comment">// options</span>
+    <span class="hljs-keyword">if</span> (options) &#123;
+      <span class="hljs-built_in">this</span>.deep = !!options.deep;
+      <span class="hljs-built_in">this</span>.user = !!options.user;
+      <span class="hljs-built_in">this</span>.lazy = !!options.lazy;
+      <span class="hljs-built_in">this</span>.sync = !!options.sync;
+      <span class="hljs-built_in">this</span>.before = options.before;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-built_in">this</span>.deep = <span class="hljs-built_in">this</span>.user = <span class="hljs-built_in">this</span>.lazy = <span class="hljs-built_in">this</span>.sync = <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-built_in">this</span>.cb = cb;
+    <span class="hljs-built_in">this</span>.id = ++uid; <span class="hljs-comment">// uid for batching</span>
+    <span class="hljs-built_in">this</span>.active = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">this</span>.dirty = <span class="hljs-built_in">this</span>.lazy; <span class="hljs-comment">// for lazy watchers</span>
+    <span class="hljs-built_in">this</span>.deps = [];
+    <span class="hljs-built_in">this</span>.newDeps = [];
+    <span class="hljs-built_in">this</span>.depIds = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+    <span class="hljs-built_in">this</span>.newDepIds = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Set</span>();
+    <span class="hljs-built_in">this</span>.expression =
+      process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> ? expOrFn.toString() : <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-comment">// parse expression for getter</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> expOrFn === <span class="hljs-string">&#x27;function&#x27;</span>) &#123;
+      <span class="hljs-built_in">this</span>.getter = expOrFn; <span class="hljs-comment">// 如果取值函数是个函数，则直接赋值给getter</span>
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-built_in">this</span>.getter = parsePath(expOrFn); <span class="hljs-comment">// 如果取值函数是个字符串（自定义watcher内属性路径函数名），则生成一个取对象属性的函数</span>
+      <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.getter) &#123;
+        <span class="hljs-comment">// 这种情况出现在字符串对象路径不为.取值方式，使用了[ ]取属性方式</span>
+        <span class="hljs-built_in">this</span>.getter = noop;
+        process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp;
+          warn(
+            <span class="hljs-string">`Failed watching path: &quot;<span class="hljs-subst">$&#123;expOrFn&#125;</span>&quot; `</span> +
+              <span class="hljs-string">&#x27;Watcher only accepts simple dot-delimited paths. &#x27;</span> +
+              <span class="hljs-string">&#x27;For full control, use a function instead.&#x27;</span>,
+            vm
+          );
+      &#125;
+    &#125;
+    <span class="hljs-built_in">this</span>.value = <span class="hljs-built_in">this</span>.lazy <span class="hljs-comment">// 如果不是惰性取值则立刻取值</span>
+      ? <span class="hljs-literal">undefined</span>
+      : <span class="hljs-built_in">this</span>.get();
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Evaluate the getter, and re-collect dependencies.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// 取值操作，这里会触发所有观察者getter收集依赖</span>
+  get() &#123;
+    pushTarget(<span class="hljs-built_in">this</span>); <span class="hljs-comment">// 当前订阅者入订阅器栈</span>
+    <span class="hljs-keyword">let</span> value;
+    <span class="hljs-keyword">const</span> vm = <span class="hljs-built_in">this</span>.vm;
+    <span class="hljs-keyword">try</span> &#123;
+      value = <span class="hljs-built_in">this</span>.getter.call(vm, vm); <span class="hljs-comment">// 取一次值，这里会触发所有数据观察者收集依赖</span>
+    &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.user) &#123;
+        handleError(e, vm, <span class="hljs-string">`getter for watcher &quot;<span class="hljs-subst">$&#123;<span class="hljs-built_in">this</span>.expression&#125;</span>&quot;`</span>);
+      &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">throw</span> e;
+      &#125;
+    &#125; <span class="hljs-keyword">finally</span> &#123;
+      <span class="hljs-comment">// &quot;touch&quot; every property so they are all tracked as</span>
+      <span class="hljs-comment">// dependencies for deep watching</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.deep) &#123;
+        traverse(value); <span class="hljs-comment">// 递归访问所有属性值，触发所有getter</span>
+      &#125;
+      popTarget(); <span class="hljs-comment">// 出栈</span>
+      <span class="hljs-built_in">this</span>.cleanupDeps(); <span class="hljs-comment">// 清理上一次订阅器的关联表</span>
+    &#125;
+    <span class="hljs-keyword">return</span> value;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Add a dependency to this directive.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// 添加订阅器关联，确保相同的依赖不会重复添加</span>
+  addDep(dep: Dep) &#123;
+    <span class="hljs-keyword">const</span> id = dep.id;
+    <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.newDepIds.has(id)) &#123;
+      <span class="hljs-built_in">this</span>.newDepIds.add(id);
+      <span class="hljs-built_in">this</span>.newDeps.push(dep);
+      <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.depIds.has(id)) &#123;
+        dep.addSub(<span class="hljs-built_in">this</span>); <span class="hljs-comment">// 为订阅器添加当前订阅者</span>
+      &#125;
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Clean up for dependency collection.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// 移除不在新订阅器id表内的订阅器，每次更新都会将不再需要订阅的移除</span>
+  cleanupDeps() &#123;
+    <span class="hljs-keyword">let</span> i = <span class="hljs-built_in">this</span>.deps.length;
+    <span class="hljs-keyword">while</span> (i--) &#123;
+      <span class="hljs-keyword">const</span> dep = <span class="hljs-built_in">this</span>.deps[i];
+      <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.newDepIds.has(dep.id)) &#123;
+        dep.removeSub(<span class="hljs-built_in">this</span>);
+      &#125;
+    &#125;
+    <span class="hljs-keyword">let</span> tmp = <span class="hljs-built_in">this</span>.depIds; <span class="hljs-comment">// 新的表加入当前表字段中，然后将新表清空</span>
+    <span class="hljs-built_in">this</span>.depIds = <span class="hljs-built_in">this</span>.newDepIds;
+    <span class="hljs-built_in">this</span>.newDepIds = tmp;
+    <span class="hljs-built_in">this</span>.newDepIds.clear();
+    tmp = <span class="hljs-built_in">this</span>.deps;
+    <span class="hljs-built_in">this</span>.deps = <span class="hljs-built_in">this</span>.newDeps;
+    <span class="hljs-built_in">this</span>.newDeps = tmp;
+    <span class="hljs-built_in">this</span>.newDeps.length = <span class="hljs-number">0</span>;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Subscriber interface.</span>
+<span class="hljs-comment">   * Will be called when a dependency changes.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// 更新订阅者接口，如果是惰性取值则标记dirty，然后在evaluate中才更新取</span>
+  update() &#123;
+    <span class="hljs-comment">/* istanbul ignore else */</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.lazy) &#123;
+      <span class="hljs-comment">// 计算watcher会懒取值</span>
+      <span class="hljs-built_in">this</span>.dirty = <span class="hljs-literal">true</span>;
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.sync) &#123;
+      <span class="hljs-comment">// 这个同步更新目前没见到,其实在自定义watcher可以设置sync让其同步更新</span>
+      <span class="hljs-built_in">this</span>.run();
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-comment">// 自定义watcher和渲染会走异步队列</span>
+      queueWatcher(<span class="hljs-built_in">this</span>); <span class="hljs-comment">// 并不是每次数据改变就立刻触发，而是推入队列中异步更新订阅者</span>
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Scheduler job interface.</span>
+<span class="hljs-comment">   * Will be called by the scheduler.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// 更新订阅者的任务，也是在调度器队列里的任务最终回调</span>
+  run() &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.active) &#123;
+      <span class="hljs-keyword">const</span> value = <span class="hljs-built_in">this</span>.get(); <span class="hljs-comment">// 取一次值，这里会触发所有数据观察者收集依赖</span>
+      <span class="hljs-keyword">if</span> (
+        value !== <span class="hljs-built_in">this</span>.value ||
+        <span class="hljs-comment">// Deep watchers and watchers on Object/Arrays should fire even</span>
+        <span class="hljs-comment">// when the value is the same, because the value may</span>
+        <span class="hljs-comment">// have mutated.</span>
+        isObject(value) ||
+        <span class="hljs-built_in">this</span>.deep
+      ) &#123;
+        <span class="hljs-comment">// 当新值与旧值不一致，或者是对象、数组，或者配置了deep就触发回调</span>
+        <span class="hljs-comment">// set new value</span>
+        <span class="hljs-keyword">const</span> oldValue = <span class="hljs-built_in">this</span>.value;
+        <span class="hljs-built_in">this</span>.value = value;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.user) &#123;
+          <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-built_in">this</span>.cb.call(<span class="hljs-built_in">this</span>.vm, value, oldValue); <span class="hljs-comment">// 这里的cb就是上面说的更新后的回调，大部分情况在watch的handler</span>
+          &#125; <span class="hljs-keyword">catch</span> (e) &#123;
+            handleError(
+              e,
+              <span class="hljs-built_in">this</span>.vm,
+              <span class="hljs-string">`callback for watcher &quot;<span class="hljs-subst">$&#123;<span class="hljs-built_in">this</span>.expression&#125;</span>&quot;`</span>
+            );
+          &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+          <span class="hljs-built_in">this</span>.cb.call(<span class="hljs-built_in">this</span>.vm, value, oldValue); <span class="hljs-comment">// 这里的cb就是上面说的更新后的回调，大部分情况在watch的handler</span>
+        &#125;
+      &#125;
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Evaluate the value of the watcher.</span>
+<span class="hljs-comment">   * This only gets called for lazy watchers.</span>
+<span class="hljs-comment">   */</span>
+  evaluate() &#123;
+    <span class="hljs-comment">// 这里在dirty为true时才会调用，在计算watcher内的</span>
+    <span class="hljs-built_in">this</span>.value = <span class="hljs-built_in">this</span>.get(); <span class="hljs-comment">// 获取值，并在外部获取watcher.value</span>
+    <span class="hljs-built_in">this</span>.dirty = <span class="hljs-literal">false</span>; <span class="hljs-comment">// 获取过了就改回去</span>
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Depend on all deps collected by this watcher.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 这里是将本次watcher在订阅中的订阅器都被栈顶的watcher订阅，调用时是computed的getter，</span>
+<span class="hljs-comment">   * 此时计算watcher已出栈，栈内是渲染watcher，通过遍历本次watcher里的deps库，让渲染watcher都去订阅他们，</span>
+<span class="hljs-comment">   * 意思是，计算属性依赖的data都会被渲染watcher订阅</span>
+<span class="hljs-comment">   */</span>
+  depend() &#123;
+    <span class="hljs-keyword">let</span> i = <span class="hljs-built_in">this</span>.deps.length;
+    <span class="hljs-keyword">while</span> (i--) &#123;
+      <span class="hljs-built_in">this</span>.deps[i].depend();
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * Remove self from all dependencies&#x27; subscriber list.</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-comment">// 移除所有订阅器上自身的订阅，在组件移除，$watch返回的unwatch上使用</span>
+  teardown() &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.active) &#123;
+      <span class="hljs-comment">// remove self from vm&#x27;s watcher list</span>
+      <span class="hljs-comment">// this is a somewhat expensive operation so we skip it</span>
+      <span class="hljs-comment">// if the vm is being destroyed.</span>
+      <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.vm._isBeingDestroyed) &#123;
+        remove(<span class="hljs-built_in">this</span>.vm._watchers, <span class="hljs-built_in">this</span>);
+      &#125;
+      <span class="hljs-keyword">let</span> i = <span class="hljs-built_in">this</span>.deps.length;
+      <span class="hljs-keyword">while</span> (i--) &#123;
+        <span class="hljs-built_in">this</span>.deps[i].removeSub(<span class="hljs-built_in">this</span>);
+      &#125;
+      <span class="hljs-built_in">this</span>.active = <span class="hljs-literal">false</span>;
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<h4 id="Watcher-内的-depend-有什么用"><a href="#Watcher-内的-depend-有什么用" class="headerlink" title="Watcher 内的 depend 有什么用"></a>Watcher 内的 depend 有什么用</h4><p>该方法会在 computed 属性内调用 getter 时调用。</p>
+<p>depend 在 Watcher 类里的意思是，将本次<code>计算Watcher</code>所订阅的属性，都会被<code>渲染Watcher</code>订阅，如此知道渲染其实直接订阅的是 computed 里的依赖，并非订阅了 computed，视图并不知道 computed 的更新。证明方法是：computed 内设置 get 和 set，并且使用一个非 observable 的数据，如直接在 window 上定义一个变量，此次 computed 关联他，记得在更改时，调用下 vm 上的_computedWatchers 内本次 watcher 的 run，因为无劫持数据，computed 不知道你的数据更新了。此时更改 computed 数据，视图并未更新。</p>
+<h2 id="异步执行调度器"><a href="#异步执行调度器" class="headerlink" title="异步执行调度器"></a>异步执行调度器</h2><p>这块是 Vue 内的异步执行调度器，在<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue/blob/v2.6.11/src/core/observer/scheduler.js">vue/src/core/scheduler.js</a>内。</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> type Watcher <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./watcher&#x27;</span>;
+<span class="hljs-keyword">import</span> config <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../config&#x27;</span>;
+<span class="hljs-keyword">import</span> &#123; callHook, activateChildComponent &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../instance/lifecycle&#x27;</span>;
+
+<span class="hljs-keyword">import</span> &#123; warn, nextTick, devtools, inBrowser, isIE &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../util/index&#x27;</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> MAX_UPDATE_COUNT = <span class="hljs-number">100</span>;
+
+<span class="hljs-keyword">const</span> queue: <span class="hljs-built_in">Array</span>&lt;Watcher&gt; = [];
+<span class="hljs-keyword">const</span> activatedChildren: <span class="hljs-built_in">Array</span>&lt;Component&gt; = [];
+<span class="hljs-keyword">let</span> has: &#123; [key: number]: ?<span class="hljs-literal">true</span> &#125; = &#123;&#125;;
+<span class="hljs-keyword">let</span> circular: &#123; [key: number]: number &#125; = &#123;&#125;;
+<span class="hljs-keyword">let</span> waiting = <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">let</span> flushing = <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Reset the scheduler&#x27;s state.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-comment">// 重置运行状态的方法</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">resetSchedulerState</span>(<span class="hljs-params"></span>) </span>&#123;
+  index = queue.length = activatedChildren.length = <span class="hljs-number">0</span>;
+  has = &#123;&#125;;
+  <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span>) &#123;
+    circular = &#123;&#125;;
+  &#125;
+  waiting = flushing = <span class="hljs-literal">false</span>;
+&#125;
+
+<span class="hljs-comment">// Async edge case #6566 requires saving the timestamp when event listeners are</span>
+<span class="hljs-comment">// attached. However, calling performance.now() has a perf overhead especially</span>
+<span class="hljs-comment">// if the page has thousands of event listeners. Instead, we take a timestamp</span>
+<span class="hljs-comment">// every time the scheduler flushes and use that for all event listeners</span>
+<span class="hljs-comment">// attached during that flush.</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">let</span> currentFlushTimestamp = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// Async edge case fix requires storing an event listener&#x27;s attach timestamp.</span>
+<span class="hljs-keyword">let</span> getNow: <span class="hljs-function">() =&gt;</span> number = <span class="hljs-built_in">Date</span>.now;
+
+<span class="hljs-comment">// Determine what event timestamp the browser is using. Annoyingly, the</span>
+<span class="hljs-comment">// timestamp can either be hi-res (relative to page load) or low-res</span>
+<span class="hljs-comment">// (relative to UNIX epoch), so in order to compare time we have to use the</span>
+<span class="hljs-comment">// same timestamp type when saving the flush timestamp.</span>
+<span class="hljs-comment">// All IE versions use low-res event timestamps, and have problematic clock</span>
+<span class="hljs-comment">// implementations (#9632)</span>
+<span class="hljs-keyword">if</span> (inBrowser &amp;&amp; !isIE) &#123;
+  <span class="hljs-keyword">const</span> performance = <span class="hljs-built_in">window</span>.performance;
+  <span class="hljs-keyword">if</span> (
+    performance &amp;&amp;
+    <span class="hljs-keyword">typeof</span> performance.now === <span class="hljs-string">&#x27;function&#x27;</span> &amp;&amp;
+    getNow() &gt; <span class="hljs-built_in">document</span>.createEvent(<span class="hljs-string">&#x27;Event&#x27;</span>).timeStamp
+  ) &#123;
+    <span class="hljs-comment">// if the event timestamp, although evaluated AFTER the Date.now(), is</span>
+    <span class="hljs-comment">// smaller than it, it means the event is using a hi-res timestamp,</span>
+    <span class="hljs-comment">// and we need to use the hi-res version for event listener timestamps as</span>
+    <span class="hljs-comment">// well.</span>
+    getNow = <span class="hljs-function">() =&gt;</span> performance.now();
+  &#125;
+&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Flush both queues and run the watchers.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">flushSchedulerQueue</span>(<span class="hljs-params"></span>) </span>&#123;
+  currentFlushTimestamp = getNow();
+  flushing = <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">let</span> watcher, id;
+
+  <span class="hljs-comment">// Sort queue before flush.</span>
+  <span class="hljs-comment">// This ensures that:</span>
+  <span class="hljs-comment">// 1. Components are updated from parent to child. (because parent is always</span>
+  <span class="hljs-comment">//    created before the child)</span>
+  <span class="hljs-comment">// 2. A component&#x27;s user watchers are run before its render watcher (because</span>
+  <span class="hljs-comment">//    user watchers are created before the render watcher)</span>
+  <span class="hljs-comment">// 3. If a component is destroyed during a parent component&#x27;s watcher run,</span>
+  <span class="hljs-comment">//    its watchers can be skipped.</span>
+  queue.sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.id - b.id); <span class="hljs-comment">// 这里需要排一个序，确保更新从父再到子，自定义wathcer需要早于渲染watcher，如果一个组件在父组件的watcher运行中销毁，他也可以被跳过</span>
+
+  <span class="hljs-comment">// do not cache length because more watchers might be pushed</span>
+  <span class="hljs-comment">// as we run existing watchers</span>
+  <span class="hljs-keyword">for</span> (index = <span class="hljs-number">0</span>; index &lt; queue.length; index++) &#123;
+    watcher = queue[index];
+    <span class="hljs-keyword">if</span> (watcher.before) &#123;
+      watcher.before();
+    &#125;
+    id = watcher.id;
+    has[id] = <span class="hljs-literal">null</span>;
+    watcher.run();
+    <span class="hljs-comment">// in dev build, check and stop circular updates.</span>
+    <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp; has[id] != <span class="hljs-literal">null</span>) &#123;
+      circular[id] = (circular[id] || <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">if</span> (circular[id] &gt; MAX_UPDATE_COUNT) &#123;
+        warn(
+          <span class="hljs-string">&#x27;You may have an infinite update loop &#x27;</span> +
+            (watcher.user
+              ? <span class="hljs-string">`in watcher with expression &quot;<span class="hljs-subst">$&#123;watcher.expression&#125;</span>&quot;`</span>
+              : <span class="hljs-string">`in a component render function.`</span>),
+          watcher.vm
+        );
+        <span class="hljs-keyword">break</span>;
+      &#125;
+    &#125;
+  &#125;
+
+  <span class="hljs-comment">// keep copies of post queues before resetting state</span>
+  <span class="hljs-keyword">const</span> activatedQueue = activatedChildren.slice();
+  <span class="hljs-keyword">const</span> updatedQueue = queue.slice();
+
+  resetSchedulerState(); <span class="hljs-comment">// 重置状态</span>
+
+  <span class="hljs-comment">// call component updated and activated hooks</span>
+  callActivatedHooks(activatedQueue);
+  callUpdatedHooks(updatedQueue);
+
+  <span class="hljs-comment">// devtool hook</span>
+  <span class="hljs-comment">/* istanbul ignore if */</span>
+  <span class="hljs-keyword">if</span> (devtools &amp;&amp; config.devtools) &#123;
+    devtools.emit(<span class="hljs-string">&#x27;flush&#x27;</span>);
+  &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callUpdatedHooks</span>(<span class="hljs-params">queue</span>) </span>&#123;
+  <span class="hljs-keyword">let</span> i = queue.length;
+  <span class="hljs-keyword">while</span> (i--) &#123;
+    <span class="hljs-keyword">const</span> watcher = queue[i];
+    <span class="hljs-keyword">const</span> vm = watcher.vm;
+    <span class="hljs-keyword">if</span> (vm._watcher === watcher &amp;&amp; vm._isMounted &amp;&amp; !vm._isDestroyed) &#123;
+      callHook(vm, <span class="hljs-string">&#x27;updated&#x27;</span>);
+    &#125;
+  &#125;
+&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Queue a kept-alive component that was activated during patch.</span>
+<span class="hljs-comment"> * The queue will be processed after the entire tree has been patched.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queueActivatedComponent</span>(<span class="hljs-params">vm: Component</span>) </span>&#123;
+  <span class="hljs-comment">// setting _inactive to false here so that a render function can</span>
+  <span class="hljs-comment">// rely on checking whether it&#x27;s in an inactive tree (e.g. router-view)</span>
+  vm._inactive = <span class="hljs-literal">false</span>;
+  activatedChildren.push(vm);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callActivatedHooks</span>(<span class="hljs-params">queue</span>) </span>&#123;
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; queue.length; i++) &#123;
+    queue[i]._inactive = <span class="hljs-literal">true</span>;
+    activateChildComponent(queue[i], <span class="hljs-literal">true</span> <span class="hljs-comment">/* true */</span>);
+  &#125;
+&#125;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Push a watcher into the watcher queue.</span>
+<span class="hljs-comment"> * Jobs with duplicate IDs will be skipped unless it&#x27;s</span>
+<span class="hljs-comment"> * pushed when the queue is being flushed.</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-comment">// 这里是将需要更新的watcher推进队列中，在下一个tick批量运行</span>
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queueWatcher</span>(<span class="hljs-params">watcher: Watcher</span>) </span>&#123;
+  <span class="hljs-keyword">const</span> id = watcher.id;
+  <span class="hljs-keyword">if</span> (has[id] == <span class="hljs-literal">null</span>) &#123;
+    <span class="hljs-comment">// 先保证同一个watcher只会添加一次</span>
+    has[id] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (!flushing) &#123;
+      queue.push(watcher); <span class="hljs-comment">// 如果没在运行中就直接插入队列</span>
+    &#125; <span class="hljs-keyword">else</span> &#123;
+      <span class="hljs-comment">// if already flushing, splice the watcher based on its id</span>
+      <span class="hljs-comment">// if already past its id, it will be run next immediately.</span>
+      <span class="hljs-keyword">let</span> i = queue.length - <span class="hljs-number">1</span>;
+      <span class="hljs-keyword">while</span> (i &gt; index &amp;&amp; queue[i].id &gt; watcher.id) &#123;
+        i--;
+      &#125;
+      queue.splice(i + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, watcher); <span class="hljs-comment">// 在运行中就找到id所在的位置插入</span>
+    &#125;
+    <span class="hljs-comment">// queue the flush</span>
+    <span class="hljs-keyword">if</span> (!waiting) &#123;
+      <span class="hljs-comment">// 在准备运行中就不要再启动了</span>
+      waiting = <span class="hljs-literal">true</span>;
+
+      <span class="hljs-keyword">if</span> (process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> &amp;&amp; !config.async) &#123;
+        flushSchedulerQueue();
+        <span class="hljs-keyword">return</span>;
+      &#125;
+      nextTick(flushSchedulerQueue); <span class="hljs-comment">// nextTick即下一微任务优先，不支持就下一宏任务</span>
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>整个 Vue 的响应式源码大概就是这样，需要 Observer、Dep、Watcher 互相配合，而数据流动是这样的：</p>
+<ol>
+<li>new Vue 时获取 data 并走 Observer，对数据劫持了 getter 和 setter，并且创建了 Dep 并持有了它。</li>
+<li>渲染模板时创建 Watcher，并调用 get 更新一次，watcher 推入 Dep 栈中，并触发渲染，渲染时使用到了 data 中的数据会触发所有数据获取操作。</li>
+<li>触发 getter 内的 dep.depend 收集依赖，将 Dep.target 中的 watcher 收集到自己身上，watcher 也将当前 dep 收集到自己身上。</li>
+<li>到这里初次渲染绑定依赖完成。</li>
+<li>更改数据触发数据观察者内的 setter 调用 dep.notify，通知 dep 内所有 wathcer。</li>
+<li>watcher 更新，这时候就是重复上面第 2 步的步骤了。</li>
+</ol>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Javascript/">Javascript</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Vue/">Vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E4%B8%8D%E5%87%86%E7%A1%AE%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">不准确的定时器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E4%BB%8E%E6%A0%87%E5%87%86%E5%AE%9E%E7%8E%B0%E5%85%A5%E6%89%8B%E7%90%86%E8%A7%A3%20Promise/">
+                        <span class="hidden-mobile">从标准实现入手理解 Promise</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2"></div>
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <!-- <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div> -->
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            
+            <span id="busuanzi_value_site_pv"></span>
+             
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            
+            <span id="busuanzi_value_site_uv"></span>
+             
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Vue2 响应式原理&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "left",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

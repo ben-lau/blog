@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/weather.png">
+  <link rel="icon" type="image/png" href="/images/weather.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Ben Lau">
+  <meta name="keywords" content="">
+  <title>变量提升和函数声明提升 - Ben Lau&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Ben Lau's space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/bg-toys.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-02-08 11:34" pubdate>
+        2021年2月8日 中午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    
+      <div class="d-none d-lg-block col-lg-2 ml-3 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">变量提升和函数声明提升</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：5 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="变量提升和函数声明提升"><a href="#变量提升和函数声明提升" class="headerlink" title="变量提升和函数声明提升"></a>变量提升和函数声明提升</h1><p>关于 Javascript 中的变量提升（variable hoisting）可能在前端界已经耳熟能详了，可能你会觉得设计初衷是什么呢，或者这里有出于什么考虑以及解决了什么问题呢？因为这块“特性”成为了前端人必须了解并绕过的坑，也可能成为了不少前端人的困扰。</p>
+<p>其实根据 Brendan Eich 的说法：<br><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/brendan-erich-answer.png" srcset="/img/loading.gif" alt="Brendan Eich本人回复关于变量提升"></p>
+<p>大概意思就是，变量提升是函数提升的意外结果。（手动狗头）</p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>下面开始先给几道有趣的题：</p>
+<p>1、</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span> (!(Ben <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>)) &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-number">1</span>);
+  <span class="hljs-keyword">var</span> Ben = <span class="hljs-string">&#x27;handsome&#x27;</span>;
+&#125;
+<span class="hljs-built_in">console</span>.log(Ben <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>);
+<span class="hljs-built_in">console</span>.log(Ben);</code></pre></div>
+
+<p>2、</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> a;
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+  a = <span class="hljs-number">1</span>;
+  <span class="hljs-built_in">console</span>.log(a);
+  <span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span>) &#123;
+    <span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+    <span class="hljs-built_in">console</span>.log(a);
+  &#125;
+  <span class="hljs-built_in">console</span>.log(a);
+&#125;)();
+<span class="hljs-built_in">console</span>.log(a);</code></pre></div>
+
+<p>3、</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span>;
+&#123;
+  <span class="hljs-built_in">console</span>.log(a);
+  <span class="hljs-keyword">var</span> a = <span class="hljs-number">2</span>;
+  <span class="hljs-built_in">console</span>.log(a);
+&#125;</code></pre></div>
+
+<p>4、</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">var</span> b = <span class="hljs-number">1</span>;
+(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(b);
+  <span class="hljs-keyword">var</span> b = <span class="hljs-number">2</span>;
+  <span class="hljs-built_in">console</span>.log(b);
+&#125;)();</code></pre></div>
+
+<p>5、</p>
+<div class="hljs"><pre><code class="hljs javascript">&#123;
+  a = <span class="hljs-number">123</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+&#125;
+<span class="hljs-built_in">console</span>.log(a);</code></pre></div>
+
+<p>6、</p>
+<div class="hljs"><pre><code class="hljs javascript">&#123;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">123</span>;
+&#125;
+<span class="hljs-built_in">console</span>.log(a);</code></pre></div>
+
+<p>7、</p>
+<div class="hljs"><pre><code class="hljs javascript">&#123;
+  a = <span class="hljs-number">123</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">456</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+&#125;
+<span class="hljs-built_in">console</span>.log(a);</code></pre></div>
+
+<h2 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h2><p>JavaScript 代码从开始经过分词（tokenize）、预解析（preparse）、解析（parse），而变量声明在 prepare 时期就完成了。</p>
+<p>可以这么理解，一个变量有着<code>声明</code>、<code>初始化</code>、<code>赋值</code>的过程，而<code>声明</code>会被预解析时就完成并且进入到各自的执行环境中，而 var 在此时将<code>初始化</code>也完成了(undefined)，函数声明则是连<code>赋值</code>也完成了（函数内存地址指向）。</p>
+<ul>
+<li>let、const 提升了<code>声明</code>，并将变量放入词法环境中，这时候值为未初始化（uninitialized），所以不允许使用（暂时性死区）</li>
+<li>var 提升了<code>声明</code>和<code>初始化</code>，并将变量放入变量环境中，这时候值为 undefined</li>
+<li>函数定义提升了<code>声明</code>、<code>初始化</code>和<code>赋值</code>，将函数创建进入堆，并将值改为函数内存地址。</li>
+</ul>
+<p>(可参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31219420/are-variables-declared-with-let-or-const-hoisted/31222689#31222689">let、const 是否有变量提升？</a>))</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">if</span> (<span class="hljs-literal">false</span>) &#123;
+  <span class="hljs-keyword">var</span> a;
+&#125;
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;a&#x27;</span> <span class="hljs-keyword">in</span> <span class="hljs-built_in">window</span>); <span class="hljs-comment">// true</span></code></pre></div>
+
+<p>这块代码内，window 对象内并没有 a 变量，而且条件为 false 也并不会执行内部代码，但是这段打印确实 true，这里就说明了在代码未解析执行时就已经完成了声明。</p>
+<h2 id="题目解析"><a href="#题目解析" class="headerlink" title="题目解析"></a>题目解析</h2><ol>
+<li><p>题目 1 解析<br>因为 var 声明会在 preparse 时期执行，先于执行语句解析声明变量，且 var 声明作用于函数执行的作用域，所以会穿透 for 和 if 语句。</p>
+</li>
+<li><p>题目 2 解析<br>因为 var 声明会在 preparse 时期执行，先于执行语句解析声明变量，且 var 声明作用于函数执行的作用域，所以会穿透 for 和 if 语句。而 function 是有函数作用域的，所以 iife 内的 a 变量为私有，所以内部都会打印 1，函数外的 a 因未被赋值所以 undefined。</p>
+</li>
+<li><p>题目 3 解析<br>因为 var 不进入块语句中的词法环境，并且会提升，而且对于 var 来说没块级作用域。</p>
+</li>
+<li><p>题目 4 解析<br>这里就是因为函数作用域的问题，但是为什么第一个打印还是 undefined，因为 javascript 寻找变量顺序是当前作用域一直向上寻找，而这里因为变量提升所以在 iife 函数中声明了私有变量，但是未赋值，所以为 undefined。</p>
+</li>
+</ol>
+<h2 id="函数提升"><a href="#函数提升" class="headerlink" title="函数提升"></a>函数提升</h2><p>函数定义说的是 function 定义的函数（<code>function func()&#123;&#125;</code>），而不是匿名函数（<code>var func = function()&#123;&#125;</code>）赋值。而 function 定义不在块语句中（<code>&#123;&#125;</code>）的话，它会在预解析时声明、初始化、赋值。</p>
+<p>而 function 定义如果在块语句中的话，包括 if/for/try/with 等，在 ES3 标准中，预解析，都会将 function 的声明和初始化和赋值都会提升到块语句外层；而 ES6 标准后，块语句中 function 的提升只是声明和初始化，并不赋值。而<strong>为了兼容旧标准，块语句中的 function 会将执行时，将当前块语句中的<code>变量环境</code>映射一份到外层上下文中，使得外层拥有了 function 语句这一行以上的所有变量的赋值，而后面的所有变量都不会被提升，成为了当前块语句的私有变量</strong>。</p>
+<p>而上面的题目 5、6、7 就是典型的例子，其实如果只要劫持一下 window 的属性，就会知道是否赋值了（<strong>因为 var 提升会将变量定义到 window 内，而 let、const 并不会，即使是全局定义的 let、const 也不进入到 window 对象内的属性</strong>）</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-built_in">Object</span>.defineProperty(<span class="hljs-built_in">window</span>, <span class="hljs-string">&#x27;a&#x27;</span>, &#123;
+  set(e) &#123;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;setA&#x27;</span>, e);
+  &#125;,
+&#125;);
+&#123;
+  a = <span class="hljs-number">123</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">456</span>;
+&#125;
+<span class="hljs-comment">// setA 123</span>
+
+&#123;
+  a = <span class="hljs-number">123</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">456</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+&#125;
+<span class="hljs-comment">// setA 123</span>
+<span class="hljs-comment">// setA 456</span>
+
+&#123;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">123</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">456</span>;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"></span>) </span>&#123;&#125;
+  a = <span class="hljs-number">789</span>;
+&#125;
+<span class="hljs-comment">// setA f a()&#123;&#125;</span>
+<span class="hljs-comment">// setA 123</span>
+<span class="hljs-comment">// setA 456</span></code></pre></div>
+
+<p>大概解析如下：<br><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/function-hoist.png" srcset="/img/loading.gif" alt="块语句内函数定义"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这里能看出 var 和 function 因为历史原因或者新旧标准的原因导致了多个奇怪的问题，所以在平时开发工作中，也应该尽量使用 let 和 const。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Javascript/">Javascript</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/%E8%B7%A8%E5%9F%9F%E6%98%AF%E6%80%8E%E4%B9%88%E5%9B%9E%E4%BA%8B/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">跨域是怎么回事</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F/">
+                        <span class="hidden-mobile">执行上下文和作用域</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2"></div>
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <!-- <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div> -->
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            
+            <span id="busuanzi_value_site_pv"></span>
+             
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            
+            <span id="busuanzi_value_site_uv"></span>
+             
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "变量提升和函数声明提升&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "left",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

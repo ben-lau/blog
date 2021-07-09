@@ -1,0 +1,669 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/weather.png">
+  <link rel="icon" type="image/png" href="/images/weather.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Ben Lau">
+  <meta name="keywords" content="">
+  <title>跨域是怎么回事 - Ben Lau&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/atom-one-dark.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+
+<body>
+  <header style="height: 80vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Ben Lau's space</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('/images/bg-grassland-and-bridge.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-08 19:02" pubdate>
+        2021年4月8日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      50
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    
+      <div class="d-none d-lg-block col-lg-2 ml-3 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">跨域是怎么回事</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="跨域是怎么回事"><a href="#跨域是怎么回事" class="headerlink" title="跨域是怎么回事"></a>跨域是怎么回事</h1><h2 id="从一个常见的问题开篇"><a href="#从一个常见的问题开篇" class="headerlink" title="从一个常见的问题开篇"></a>从一个常见的问题开篇</h2><p><code>request has been blocked by CORS policy: No &#39;Access-Control-Allow-Origin&#39; header is present on the requested resource.</code></p>
+<p>相信上面的错误很多时候都能碰到，一般发生在前端发起请求时，而可能很多开发都不知道怎么解决，甚至是谁去解决。其实这个就是比较典型的跨域访问问题，而绝大部分这种情况，都不是单纯靠前端能解决的，因为禁止跨域访问原本就是 web 安全规范的一项，如果纯前端能绕过去，那还有什么安全意义呢？</p>
+<h2 id="什么是跨域"><a href="#什么是跨域" class="headerlink" title="什么是跨域"></a>什么是跨域</h2><p>通常说的跨域（cross origin），其实指的是<strong>跨不同源的资源请求，而浏览器会对非同源的请求进行安全性限制</strong>，这源自于浏览器的<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy">同源策略（Same-origin policy）</a>约定，从而一定程度上提升了浏览器的安全和提高了攻击成本。</p>
+<p>那什么是不同源呢？可以将一个资源地址看成是 scheme + host + port + path 的组合：</p>
+<div class="hljs"><pre><code class="hljs vim">http<span class="hljs-variable">s:</span>//<span class="hljs-keyword">abc</span>.<span class="hljs-keyword">com</span>:<span class="hljs-number">8888</span>/home/<span class="hljs-built_in">index</span>
+scheme|  host  |port|   path   |
+
+https 是协议
+<span class="hljs-keyword">abc</span>.<span class="hljs-keyword">com</span> 是域名
+<span class="hljs-number">8888</span> 是端口
+home/<span class="hljs-built_in">index</span> 是路径</code></pre></div>
+
+<p>下面用 <code>https://abc.com/home/index</code> 作为例子发出了如下几种请求:</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th>结果</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://abc.com/index">https://abc.com/index</a></td>
+<td>成功</td>
+<td>只是路径不同</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://abc.com/home/index">http://abc.com/home/index</a></td>
+<td>失败</td>
+<td>协议不同</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://a.abc.com/home/index">https://a.abc.com/home/index</a></td>
+<td>失败</td>
+<td>域名不同</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://abc.com:8888/home/index">https://abc.com:8888/home/index</a></td>
+<td>失败</td>
+<td>端口不同</td>
+</tr>
+</tbody></table>
+<p>而在 IE 中，未将端口纳入同源策略的检查中，所以上面的最后一个在 IE 中并不受限制。</p>
+<p>可组合性是 Web 非常强大的一项能力，让 Web 可以随时加载不同来源的资源以增强自身功能，包含字体、图片、音视频、脚本等。但是强大的策略同样会带来信息泄露的风险，攻击者很容易能利用漏洞获取用户的信息，但是浏览器在安全方面也做的很好，这个就是同源策略。而同源策略所限制的交互包含以下 3 类：</p>
+<ul>
+<li>跨域网络访问：包含 XMLHttpRequest、fetch 或者<code>&lt;script&gt;、&lt;link&gt;、&lt;img&gt;、&lt;video&gt;、&lt;audio&gt;、&lt;object&gt;、&lt;embed&gt;、&lt;iframe&gt;</code>等引入的资源。</li>
+<li>跨域 dom、api 访问：主要是 iframe 的内容和 window.open 后的内容限制。</li>
+<li>跨域数据存储访问：包含 cookie、localStorage 和 IndexedDB。</li>
+</ul>
+<h2 id="同源策略的意义"><a href="#同源策略的意义" class="headerlink" title="同源策略的意义"></a>同源策略的意义</h2><p>可能在日常开发中，用 link 标签、script 标签、img 标签引入一些外部资源很常见，而且似乎也没出过问题，并且 form 里的 action 好像也可以跨域发送，为什么换成 js 请求（xmlhttprequest、fetch 等）就不行呢？</p>
+<h3 id="如果没有同源接口请求限制"><a href="#如果没有同源接口请求限制" class="headerlink" title="如果没有同源接口请求限制"></a>如果没有同源接口请求限制</h3><p>现在你的公司内网有些内部服务在跑，外部攻击者即使没有同源策略外部也无法访问，这个很安全。但是如果攻击者做一个攻击网站，想办法让你打开，请求你的内部 ip 上的服务，然后获取结果再返回到攻击者服务器里，这就能窃取到你公司内网内的信息了。你可能觉得获取内部的地址很难，如果我是直接遍历请求<code>localhost:</code>所有端口呢？这样子就能拿到所有你跑在 localhost 里的内容了。</p>
+<h3 id="如果没有同源-dom-限制"><a href="#如果没有同源-dom-限制" class="headerlink" title="如果没有同源 dom 限制"></a>如果没有同源 dom 限制</h3><p>假如有个银行网站叫<code>yinhang.com</code>，然后攻击者做了个钓鱼的网站叫<code>yinghang.com</code>，内部用 iframe 嵌入了<code>yinhang.com</code>。因为你的疏忽没看清地址，进入了钓鱼网站并登录了，而攻击者的网站又能畅通无阻地获取 iframe 内所有 dom 和对象，那你的账号密码将直接暴露给攻击者了。</p>
+<h3 id="如果没有同源存储访问"><a href="#如果没有同源存储访问" class="headerlink" title="如果没有同源存储访问"></a>如果没有同源存储访问</h3><p>这个就更恐怖了，大量的登录 token 放在 cookie，只要你登录过银行账号等，攻击者的网站就能直接向银行接口发起请求并且带上你的银行账号 token 的 cookie，然后做任何他想做的事.</p>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><p>其实说到底是个安全性的问题。</p>
+<p>那你可能会好奇为什么前者允许：因为这些资源对于浏览器来说，属于页面内容、网页资源的一部分，而且浏览器会将各个站点的不同资源放在不同的 <code>Context Group</code> 下，不同的 <code>Context Group</code> 下的资源无法互相访问。所以你放在标签内的图片等，可以展示，但是 js 无法读取，而无法得知其内容也无法将其传到别的地方，所以这里也没有外泄的问题。</p>
+<p>而 <code>form</code> 表单中 <code>action</code> 其实也没有跨域问题，因为原页面使用 form 传送信息给新页面后，原页面 js 无法获取结果，所以浏览器也是觉得安全的。其实总结来说就是，浏览器本质上并不阻止你发送请求和信息，只是在未经许可前，不允许你获取返回的结果而已。</p>
+<p>所以同源策略是非常必要且有意义的，像平时开发中遇到<a href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%9A%84%E9%97%AE%E9%A2%98%E5%BC%80%E7%AF%87">开篇中那种常见的问题</a>之类的跨域问题，<strong>基本都不是前端的问题，而且纯前端手段是无法解决的</strong>。因为如果能用前端脚本手段绕过，那安全何在呢？但是并不代表前端就可以不了解这块了。而<strong>同源策略</strong>也仅仅只是限制了浏览器环境，如果是服务端之类的就没有这个问题。</p>
+<h2 id="如何解决跨域-dom、api-访问？"><a href="#如何解决跨域-dom、api-访问？" class="headerlink" title="如何解决跨域 dom、api 访问？"></a>如何解决跨域 dom、api 访问？</h2><p>在了解了跨域问题后，可能你需要在主页面打开新窗口，或者创建 iframe，并且获取其信息，那需要如何解决呢？</p>
+<h3 id="1、postMessage"><a href="#1、postMessage" class="headerlink" title="1、postMessage"></a>1、postMessage</h3><p>window.postMessage() 是 HTML5 的 api，利用它可以实现主页面和其打开的新窗口通信、创建的 iframe 通信：</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> childWindow = <span class="hljs-built_in">window</span>.open(<span class="hljs-string">&#x27;http://localhost:8080/app2.html&#x27;</span>, <span class="hljs-string">&#x27;title&#x27;</span>);
+<span class="hljs-comment">// 第一个参数为传递信息，第二个参数为目标origin</span>
+childWindow.postMessage(<span class="hljs-string">&#x27;hello word&#x27;</span>, <span class="hljs-string">&#x27;http://localhost:8080/app2.html&#x27;</span>);</code></pre></div>
+
+<p>子页面可以监听<code>message</code>事件来获取信息</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-built_in">window</span>.addEventListener(
+  <span class="hljs-string">&#x27;message&#x27;</span>,
+  e =&gt; &#123;
+    <span class="hljs-built_in">console</span>.log(e.source); <span class="hljs-comment">// 发送信息的窗口</span>
+    <span class="hljs-built_in">console</span>.log(e.origin); <span class="hljs-comment">// 信息发向的网址</span>
+    <span class="hljs-built_in">console</span>.log(e.data); <span class="hljs-comment">// 发送的信息</span>
+  &#125;,
+  <span class="hljs-literal">false</span>
+);</code></pre></div>
+
+<h3 id="2、document-domain"><a href="#2、document-domain" class="headerlink" title="2、document.domain"></a>2、document.domain</h3><p>这个方法只适合主域名相同的情况，例如<code>aaa.com</code>打开了<code>www.aaa.com</code>页面，这种情况下，可以修改<code>document.domain</code>为<code>aaa.com</code>，如此就可以访问对方的 window 对象以及其执行的所有对象了。</p>
+<h2 id="如何解决跨域请求？"><a href="#如何解决跨域请求？" class="headerlink" title="如何解决跨域请求？"></a>如何解决跨域请求？</h2><p>除了跨域 dom、api 等对象访问以外，还有就是跨域请求访问。如果还是需要给不同源的地址发送请求，那需要怎么解决同源策略这个问题呢？</p>
+<p>其实方法有很多，可以先列举几个的方法：</p>
+<h3 id="1、关闭浏览器的安全设置"><a href="#1、关闭浏览器的安全设置" class="headerlink" title="1、关闭浏览器的安全设置"></a>1、关闭浏览器的安全设置</h3><p>同源策略本质上只是浏览器做的限制，所以只要关闭了这个限制就可以，不过这个仅仅只对自己的设备，是个治标不治本的方案。具体各个浏览器如何关闭可以自行搜索。</p>
+<h3 id="2、将-fetch-mode-设为-no-cors"><a href="#2、将-fetch-mode-设为-no-cors" class="headerlink" title="2、将 fetch mode 设为 no-cors"></a>2、将 fetch mode 设为 no-cors</h3><p>fetch 方法里有个参数 mode，可以将其设置成<code>no-cors</code></p>
+<div class="hljs"><pre><code class="hljs javascript">fetch(<span class="hljs-string">&#x27;http://localhost:9999/info&#x27;</span>, &#123;
+  mode: <span class="hljs-string">&#x27;no-cors&#x27;</span>,
+  method: <span class="hljs-string">&#x27;POST&#x27;</span>,
+&#125;)
+  .then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
+    <span class="hljs-built_in">console</span>.log(res);
+    <span class="hljs-keyword">return</span> res.text();
+  &#125;)
+  .then(<span class="hljs-built_in">console</span>.log);</code></pre></div>
+
+<p>我们本地起个服务试试，本身会跨域的请求，加上这个参数后会打印出：</p>
+<p><img src="https://raw.githubusercontent.com/ben-lau/blog/master/assets/images/fetch-mode-no-cors.jpg" srcset="/img/loading.gif" alt="fetch的mode为no-cors打印结果"></p>
+<p>可以看到状态码为 0，type 为 <code>opaque</code>，拿到的请求返回为空，但是控制台没任何报错。在控制台的 network 内又能看到正确返回。</p>
+<p>因为<a target="_blank" rel="noopener" href="https://fetch.spec.whatwg.org/#concept-request-mode">mode: ‘no-cors’</a>并非解决了跨域问题，而是告诉浏览器你需要发送一个跨域请求，并且你确实不关心返回。如此，这次请求不会报任何错误，但是也不会返回任何信息到 js 里，即使已经设置了 Access-Control-Allow-Origin 的 header。所以这个设置只是<strong>在某些场合下可用</strong>而已，并非真正解决跨域请求问题。</p>
+<h3 id="3、不使用-ajax-获取数据"><a href="#3、不使用-ajax-获取数据" class="headerlink" title="3、不使用 ajax 获取数据"></a>3、不使用 ajax 获取数据</h3><p>不是用 ajax 发出的请求确实就没有这种限制了，那考虑到的就是 html 标签和 form 表单。</p>
+<p>当我们发送请求时，变成创建一个<code>script</code>标签，那这种请求就不会受同源策略限制：</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">// 前端</span>
+<span class="hljs-keyword">const</span> request = <span class="hljs-function">(<span class="hljs-params">url, data, cb</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> id = <span class="hljs-built_in">parseInt</span>(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">10</span> ** <span class="hljs-number">10</span>);
+  <span class="hljs-keyword">const</span> callbackName = <span class="hljs-string">`callback<span class="hljs-subst">$&#123;id&#125;</span>`</span>;
+  <span class="hljs-keyword">const</span> urlSearchParams = <span class="hljs-keyword">new</span> URLSearchParams();
+  <span class="hljs-comment">// 将回调函数名告诉服务端</span>
+  urlSearchParams.set(<span class="hljs-string">&#x27;callbackName&#x27;</span>, callbackName);
+  <span class="hljs-comment">// 组装参数到url中</span>
+  <span class="hljs-built_in">Object</span>.keys(data).forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;
+    urlSearchParams.set(key, data[key]);
+  &#125;);
+  <span class="hljs-comment">// 创建script标签</span>
+  <span class="hljs-keyword">const</span> $script = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;script&#x27;</span>);
+  $script.src = <span class="hljs-string">`<span class="hljs-subst">$&#123;url&#125;</span>?<span class="hljs-subst">$&#123;urlSearchParams.toString()&#125;</span>`</span>;
+
+  <span class="hljs-comment">// 设置临时回调函数，触发callback并删除临时回调函数本身</span>
+  <span class="hljs-built_in">window</span>[callbackName] = <span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;
+    cb(data);
+    <span class="hljs-built_in">window</span>[callbackName] = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">delete</span> <span class="hljs-built_in">window</span>[callbackName];
+  &#125;;
+
+  <span class="hljs-comment">// 插入dom中，利用html资源能力发送</span>
+  <span class="hljs-built_in">document</span>.body.append($script);
+&#125;;
+
+request(<span class="hljs-string">&#x27;localhost:9999/info&#x27;</span>, &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;guy&#x27;</span>, <span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;2021&#x27;</span> &#125;, <span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;获取数据:&#x27;</span>, data);
+&#125;);</code></pre></div>
+
+<p>利用<code>script</code>标签绕过跨域问题发送出请求，最后需要服务端响应这次请求并且返回一个 js 可执行代码，触发我们定义好的临时回调函数并将数据插入：</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-comment">// 服务端</span>
+<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);
+<span class="hljs-keyword">const</span> app = express();
+
+app.get(<span class="hljs-string">&#x27;/info&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> id = req.query.id;
+  <span class="hljs-keyword">const</span> name = req.query.name;
+  <span class="hljs-keyword">const</span> callbackName = req.query.callbackName;
+  <span class="hljs-comment">// 返回可执行代码，触发临时回调函数，并将数据传入</span>
+  res.end(<span class="hljs-string">`<span class="hljs-subst">$&#123;callbackName&#125;</span>(<span class="hljs-subst">$&#123;id&#125;</span>,<span class="hljs-subst">$&#123;name&#125;</span>)`</span>);
+&#125;);</code></pre></div>
+
+<p>这样就是简单的不使用 ajax 发送请求方法了，这也是大名鼎鼎的<strong>JSONP（JSON with Padding）</strong>，这个方法在早期 CORS 规范不完整时非常常用，但是弊端也很明显：只能使用 GET 这个 method，那如何发送其他 method 的请求呢？</p>
+<hr>
+<p>其实可以利用到 form 表单，form 本身无跨域问题，也支持多种 methods，只是提交后会刷新，那我们只需创建一个 iframe，并且让 form 提交后刷新这个 iframe 而非主页面即可。</p>
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> request = <span class="hljs-function">(<span class="hljs-params">url, data, cb</span>) =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> $iframe = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;iframe&#x27;</span>);
+  $iframe.name = <span class="hljs-string">&#x27;request&#x27;</span>;
+  $iframe.style.display = <span class="hljs-string">&#x27;none&#x27;</span>;
+  <span class="hljs-comment">// 注册iframe的load事件，并且触发回调</span>
+  $iframe.addEventListener(<span class="hljs-string">&#x27;load&#x27;</span>, cb);
+
+  <span class="hljs-built_in">document</span>.body.appendChild($iframe);
+
+  <span class="hljs-keyword">const</span> $form = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;form&#x27;</span>);
+
+  $form.action = url;
+  <span class="hljs-comment">// 在指定的iframe中执行form</span>
+  $form.target = $iframe.name;
+  $form.method = <span class="hljs-string">&#x27;post&#x27;</span>;
+  $form.style.display = <span class="hljs-string">&#x27;none&#x27;</span>;
+
+  <span class="hljs-built_in">Object</span>.keys(data).forEach(<span class="hljs-function"><span class="hljs-params">key</span> =&gt;</span> &#123;
+    <span class="hljs-keyword">const</span> node = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;input&#x27;</span>);
+    node.name = key;
+    node.value = data[key];
+    $form.appendChild(node);
+  &#125;);
+
+  <span class="hljs-built_in">document</span>.body.appendChild($form);
+  $form.submit();
+
+  <span class="hljs-built_in">document</span>.body.removeChild($form);
+&#125;;</code></pre></div>
+
+<p>这种方法弊端也很明显：就是无法获取返回数据。</p>
+<h3 id="4、代理、转发"><a href="#4、代理、转发" class="headerlink" title="4、代理、转发"></a>4、代理、转发</h3><p>这种方法较为正规，利用了服务端无这种限制的优势，只要代理或者转发的服务域名跟前端域名同源即可：常见的可以前端自行启动服务转发，也可以中间件返回 CORS 配置好的 headers，也可以 nginx 反向代理。</p>
+<p>弊端嘛，就是多了一层服务，增加服务器压力和多多少少减慢了返回速度。</p>
+<h3 id="5、服务端返回-CORS-响应头"><a href="#5、服务端返回-CORS-响应头" class="headerlink" title="5、服务端返回 CORS 响应头"></a>5、服务端返回 CORS 响应头</h3><p>这个才是最正确且常规的做法，也是从根本上一劳永逸地解决了跨域问题，因为这个方案将权限完全交给服务端，服务端来控制是否允许前端获取请求响应。</p>
+<p>弊端的话，可能就是浏览器兼容问题，主要需要 IE10 以上。</p>
+<p>下一篇会详细讲解 CORS。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Javascript/">Javascript</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%89%8D%E7%AB%AF/">前端</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/">浏览器</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E5%92%8C%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%E6%8F%90%E5%8D%87/">
+                        <span class="hidden-mobile">变量提升和函数声明提升</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2"></div>
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <!-- <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div> -->
+    
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            
+            <span id="busuanzi_value_site_pv"></span>
+             
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            
+            <span id="busuanzi_value_site_uv"></span>
+             
+          </span>
+      
+    
+  </div>
+
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "跨域是怎么回事&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "left",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
